@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Programas - SENA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Círculos decorativos */
+        body::before, body::after, .decorative-circle {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        body::before {
+            top: 10%; left: 5%; width: 120px; height: 120px; background: #20b2aa;
+        }
+        body::after {
+            bottom: 15%; left: 20%; width: 150px; height: 150px; background: #cd5c5c;
+        }
+        .decorative-circle {
+            top: 25%; right: 8%; width: 100px; height: 100px; background: #daa520;
+            opacity: 0.6;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #333;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header img {
+            width: 60px;
+            vertical-align: middle;
+            margin-right: 15px;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            margin: 10px 0;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .add-button {
+            background: linear-gradient(45deg, #cd5c5c, #dc143c);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .card-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 15px;
+        }
+
+        .card-title {
+            flex: 1;
+        }
+
+        .card-info {
+            margin-top: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .info-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8em;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            min-width: 120px;
+        }
+
+        .alert {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #e74c3c;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .edit-button {
+            background: linear-gradient(45deg, #20b2aa, #17a2b8);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.85em;
+            box-shadow: 0 2px 10px rgba(32, 178, 170, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 15px;
+        }
+
+        .edit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(32, 178, 170, 0.4);
+            background: linear-gradient(45deg, #17a2b8, #138496);
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .stats {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decorative-circle"></div>
+    
+    <div class="header">
+        <a href="{% url 'aprendices:inicio' %}">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSX6Gat1r36ATdBS7sTqqFH8TvIVPMkqsdLgw&s" alt="Logo Sena">
+        </a>
+        <h1>SENA - Sistema de Gestión de Programas</h1>
+        <p>Lista de Todos los Programas</p>
+    </div>
+    
+    <div class="container">
+        <div class="stats">
+            <div>
+                <h3>Estadísticas</h3>
+                <p><strong>Total de Programas Registrados:</strong> {{ total_programas }}</p>
+            </div>
+            <a class="add-button" href="{% url 'admin:programas_programa_add' %}">+ Agregar Programa</a>
+        </div>
+
+        {% if lista_programas %}
+            <div class="cards-grid">
+                {% for programa in lista_programas %}
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-avatar">
+                            {{ programa.nombre|first }}
+                        </div>
+                        <div class="card-title">
+                            <h3 class="card-name">{{ programa.nombre }} </h3>
+                            <p class="card-id">ID: {{ programa.codigo }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-info">
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-user"></i></div>
+                            <span class="info-label">Nombre:</span>
+                            <span class="info-value">{{ programa.nombre }}</span>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <span class="info-label">Nivel Formación:</span>
+                            <span class="info-value">{{ programa.nivel_formacion }}</span>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-book-open"></i></div>
+                            <span class="info-label">Modalidad:</span>
+                            <span class="info-value">{{ programa.modalidad }}</span>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-calendar-alt"></i></div>
+                            <span class="info-label">Meses:</span>
+                            <span class="info-value">{{ programa.duracion_meses }}</span>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-info-circle"></i></div>
+                            <span class="info-label">Descripción:</span>
+                            <span class="info-value">{{ programa.descripcion }}</span>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-building"></i></div>
+                            <span class="info-label">Centro de Formación:</span>
+                            <span class="info-value">{{ programa.centro_formacion }}</span>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <span class="info-label">Regional:</span>
+                            <span class="info-value">{{ programa.regional }}</span>
+                        </div>
+                    </div>
+                    <a class="edit-button" href="{% url 'admin:programas_programa_change' programa.pk %}">
+                        <span class="edit-icon"><i class="fas fa-pencil-alt"></i></span> Editar
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert">
+                <p>No hay instructores registrados en el sistema.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

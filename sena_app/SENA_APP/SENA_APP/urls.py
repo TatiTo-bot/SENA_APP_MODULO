@@ -23,6 +23,7 @@ from django.urls import include
 urlpatterns = [
     path('', include('aprendices.urls')),
     path('', include('instructores.urls')),
+    path('', include('programas.urls')),
     path("admin/", admin.site.urls),
 ]
 admin.site.site_header = "Panel Administrativo SENA"
