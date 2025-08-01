@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Aprendiz
+from .models import Aprendiz, Curso
 
 # Create your views here.
 def aprendices(request):
@@ -13,5 +13,14 @@ def aprendices(request):
     return HttpResponse(template.render(context, request))
 
 def inicio(request):
+    total_aprendices = Aprendiz.objects.count()
+    total_cursos = Curso.objects.count()
+    cursos_activos = Curso.objects.filter(estado__in=['INI', 'EJE']).count()
     template = loader.get_template('inicio.html')
-    return HttpResponse(template.render())
+    
+    context = {
+        'total_aprendices': total_aprendices,
+        'total_cursos': total_cursos,
+        'cursos_activos': cursos_activos,
+    }
+    return HttpResponse(template.render(context, request))
