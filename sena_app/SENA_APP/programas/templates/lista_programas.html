@@ -17,7 +17,6 @@
             overflow-x: hidden;
         }
 
-        /* Círculos decorativos */
         body::before, body::after, .decorative-circle {
             content: '';
             position: fixed;
@@ -256,7 +255,7 @@
                         </div>
                         <div class="card-title">
                             <h3 class="card-name">{{ programa.nombre }} </h3>
-                            <p class="card-id">ID: {{ programa.codigo }}</p>
+                            <a href="programa/{{ programa.id}}"p class="card-id">ID: {{ programa.codigo }}</a>
                         </div>
                     </div>
                     

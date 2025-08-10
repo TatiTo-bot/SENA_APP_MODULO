@@ -16,7 +16,6 @@
             overflow-x: hidden;
         }
 
-        /* Círculos decorativos */
         body::before, body::after, .decorative-circle {
             content: '';
             position: fixed;
@@ -261,54 +260,53 @@
 
         {% if lista_cursos %}
             <div class="cards-grid">
-                {% for curso in lista_cursos %}
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-avatar">
-                            {{ curso.nombre|first }}{{ curso.programa|first }}
-                        </div>
-                        <div class="card-title">
-                            <h3 class="card-name">{{ curso.nombre }}</h3>
-                            <p class="card-id">Código: {{ curso.codigo }}</p>
-                        </div>
-                        <div class="card-actions">
-                            <a class="edit-button" href="{% url 'admin:aprendices_curso_change' curso.pk %}">
-                                <span class="edit-icon">✏️</span>
-                                Editar
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="card-info">
-                        <div class="info-item">
-                            <div class="info-icon">👨‍🏫</div>
-                            <span class="info-label">Instructor:</span>
-                            <span class="info-value">{{ curso.instructor_coordinador }}</span>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon">📅</div>
-                            <span class="info-label">Fecha Inicio:</span>
-                            <span class="info-value">{{ curso.fecha_inicio|date:"d/m/Y" }}</span>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon">📅</div>
-                            <span class="info-label">Fecha Fin:</span>
-                            <span class="info-value">{{ curso.fecha_fin|date:"d/m/Y" }}</span>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon">🕒</div>
-                            <span class="info-label">Horario:</span>
-                            <span class="info-value">{{ curso.horario }}</span>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon">📊</div>
-                            <span class="info-label">Estado:</span>
-                            <span class="info-value">{{ curso.estado }}</span>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+{% for curso in lista_cursos %}
+    <div class="card">
+        <div class="card-header">
+            <div class="card-avatar">
+            {{ curso.nombre|first }}-{{ Curso.programa|first }}            </div>
+            <div class="card-title">
+                <h3 class="card-name">{{ curso.nombre }}</h3>
+                <p class="card-id">
+                    Código: <a href="{% url 'aprendices:detalle_curso' curso.id %}">{{ curso.codigo }}</a>            </p>
+                </p>
             </div>
+            <div class="card-actions">
+                <a class="edit-button" href="{% url 'admin:aprendices_curso_change' curso.pk %}">
+                    <span class="edit-icon">✏️</span> Editar
+                </a>
+            </div>
+        </div>
+        <div class="card-info">
+            <div class="info-item">
+                <div class="info-icon">👨‍🏫</div>
+                <span class="info-label">Instructor:</span>
+                <span class="info-value">{{ curso.instructor_coordinador }}</span>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📅</div>
+                <span class="info-label">Fecha Inicio:</span>
+                <span class="info-value">{{ curso.fecha_inicio|date:"d/m/Y" }}</span>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📅</div>
+                <span class="info-label">Fecha Fin:</span>
+                <span class="info-value">{{ curso.fecha_fin|date:"d/m/Y" }}</span>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">🕒</div>
+                <span class="info-label">Horario:</span>
+                <span class="info-value">{{ curso.horario }}</span>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📊</div>
+                <span class="info-label">Estado:</span>
+                <span class="info-value">{{ curso.estado }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
         {% else %}
             <div class="alert">
                 <p>No hay cursos registrados en el sistema.</p>

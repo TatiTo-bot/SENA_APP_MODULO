@@ -247,8 +247,12 @@
             font-size: 0.9em;
             font-weight: 600;
             display: inline-block;
-            margin-top: 15px;
+            margin: 5px 5px 5px 0;
             box-shadow: 0 2px 10px rgba(30, 60, 114, 0.3);
+        }
+        
+        .programs-container {
+            margin-top: 15px;
         }
         
         .alert {
@@ -316,7 +320,7 @@
                         </div>
                         <div class="card-title">
                             <h3 class="card-name">{{ aprendiz.nombre }} {{ aprendiz.apellido }}</h3>
-                            <p class="card-id">ID: {{ aprendiz.documento_identidad }}</p>
+                            <a href="{% url 'aprendices:detalle_aprendiz' aprendiz_id=aprendiz.id %}" class="card-id">ID: {{ aprendiz.documento_identidad }}</a>
                         </div>
                     </div>
                     
@@ -324,7 +328,7 @@
                         <div class="info-item">
                             <div class="info-icon">📞</div>
                             <span class="info-label">Teléfono:</span>
-                            <span class="info-value">{{ aprendiz.teléfono }}</span>
+                            <span class="info-value">{{ aprendiz.telefono|default:"No registrado" }}</span>
                         </div>
                         
                         <div class="info-item">
@@ -346,8 +350,16 @@
                         </div>
                     </div>
                     
-                    <div class="program-badge">
-                        {{ aprendiz.programa }}
+                    <div class="programs-container">
+                        {% for aprendiz_curso in aprendiz.aprendizcurso_set.all %}
+                            <div class="program-badge">
+                                {{ aprendiz_curso.curso.nombre }}
+                            </div>
+                        {% empty %}
+                            <div class="program-badge" style="background: #6c757d;">
+                                Sin cursos asignados
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
                 {% endfor %}

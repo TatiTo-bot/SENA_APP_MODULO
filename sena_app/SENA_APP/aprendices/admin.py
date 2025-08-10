@@ -1,7 +1,5 @@
 from django.contrib import admin
 from .models import Aprendiz, Curso, InstructorCurso, AprendizCurso
-
-# Aprendiz Admin (actualizado)
 @admin.register(Aprendiz)
 class AprendizAdmin(admin.ModelAdmin):
     list_display = [

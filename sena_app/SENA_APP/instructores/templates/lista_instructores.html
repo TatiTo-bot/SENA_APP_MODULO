@@ -269,7 +269,7 @@
                         </div>
                         <div class="card-title">
                             <h3 class="card-name">{{ instructor.nombre }} {{ instructor.apellido }}</h3>
-                            <p class="card-id">ID: {{ instructor.documento_identidad }}</p>
+                            <a href="instructor/{{ instructor.id}}"p class="card-id">ID: {{ instructor.documento_identidad }}</a>
                         </div>
                         <div class="card-actions">
                             <a class="edit-button" href="{% url 'admin:instructores_instructor_change' instructor.pk %}">

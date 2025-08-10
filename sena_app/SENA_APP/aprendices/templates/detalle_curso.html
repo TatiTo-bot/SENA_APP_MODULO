@@ -1,7 +1,246 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Curso - SENA</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container-fluid {
+            background-color: #f8f9fa;
+            border-radius: 25px;
+            margin: 20px auto;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 1300px;
+        }
 
-{% block title %}Detalles Cursos - SENA APP{% endblock %}
+        .card {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
 
-{% block content %}
-    <h1>Detalles del Curso</h1>
-{% endblock %}
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1f3a93, #3498db);
+            color: white;
+            border-radius: 20px 20px 0 0 !important;
+            padding: 1.25rem 2rem;
+            border: none;
+        }
+
+        .card-header h4,
+        .card-header h5 {
+            color: white !important;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 30px;
+            background: #ffffff;
+        }
+
+        .info-card {
+            background: linear-gradient(145deg, #f8fafc, #ffffff);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            text-align: center;
+            flex: 1; /* Asegura que ambos cards tengan el mismo ancho */
+            margin-right: 15px; /* Espacio entre los cards */
+        }
+
+        .info-icon {
+            font-size: 2.5rem;
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+
+        .card-body .row {
+            display: flex;
+            align-items: flex-start; /* Alineación vertical de los elementos */
+        }
+
+        @media (max-width: 768px) {
+            .info-card {
+                margin-right: 0; /* Sin margen en pantallas pequeñas */
+                margin-bottom: 15px; /* Margen inferior para separación */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <div class="row mb-4 animate-in">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'aprendices:lista_cursos' %}">Lista Cursos</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Detalles del Curso</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row mb-4 animate-in stagger-1">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="bi bi-book-fill me-2"></i>
+                        <h4 class="mb-0">Información del Curso</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h2 class="gradient-text">{{ curso.nombre }}</h2>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-2">
+                                            <strong><i class="bi bi-hash text-muted me-2"></i>Programa:</strong>
+                                            <span class="modern-badge ms-2">{{ curso.programa }}</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p class="mb-2">
+                                            <strong><i class="bi bi-hash text-muted me-2"></i>Código:</strong>
+                                            <span class="modern-badge ms-2">{{ curso.codigo }}</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p class="mb-2">
+                                            <strong><i class="bi bi-calendar-check text-muted me-2"></i>Estado:</strong>
+                                            <span class="status-badge ms-2">{{ curso.estado }}</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p class="mb-2">
+                                            <strong><i class="bi bi-calendar-check text-muted me-2"></i>Ambiente:</strong>
+                                            <span class="status-badge ms-2">{{ curso.aula }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                {% if curso.observaciones %}
+                                <div class="mt-3">
+                                    <h6><i class="bi bi-info-circle text-muted me-2"></i>Observaciones:</h6>
+                                    <p class="text-muted">{{ curso.observaciones }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 d-flex">
+                                <div class="info-card">
+                                    <i class="bi bi-clock-fill info-icon"></i>
+                                    <h6 class="mt-2"><strong>Horario:</strong> {{ curso.horario }}</h6>
+                                </div>
+                                <div class="info-card">
+                                    <i class="bi bi-calendar-event info-icon"></i>
+                                    <h6 class="mt-2"><strong>Fecha Inicio:</strong> {{ curso.fecha_inicio }}</h6>
+                                    <h6 class="mt-2"><strong>Fecha Finalización:</strong> {{ curso.fecha_fin }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 mb-4 animate-in stagger-2">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-people-fill me-2"></i>
+                            <h5 class="mb-0">Aprendices Registrados</h5>
+                        </div>
+                        <span class="count-badge">{{ aprendices_curso|length }} estudiantes</span>
+                    </div>
+                    <div class="card-body">
+                        {% if aprendices_curso %}
+                            <div class="list-group list-group-flush">
+                                {% for aprendiz in aprendices_curso %}
+                                <div class="list-group-item d-flex align-items-center px-0">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">{{ aprendiz }}</h6>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No hay aprendices registrados aún.</p>
+                        {% endif %}
+                    </div>
+                    {% if aprendices_curso %}
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Lista de aprendices</small>
+                            <a href="{% url 'aprendices:lista_aprendices' %}" class="modern-btn btn-sm">
+                                <i class="bi bi-eye me-1"></i>Ver
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4 animate-in stagger-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-workspace me-2"></i>
+                            <h5 class="mb-0">Instructores del Curso</h5>
+                        </div>
+                        <span class="count-badge">{{ instructores_curso|length }} instructores</span>
+                    </div>
+                    <div class="card-body">
+                        {% if instructores_curso %}
+                            <div class="list-group list-group-flush">
+                                {% for instructor in instructores_curso %}
+                                <div class="list-group-item d-flex align-items-center px-0">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">{{ instructor }}</h6>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No hay instructores asignados aún.</p>
+                        {% endif %}
+                    </div>
+                    {% if instructores_curso %}
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Lista de instructores</small>
+                            <a href="{% url 'instructores:lista_instructores' %}" class="modern-btn btn-sm">
+                                <i class="bi bi-eye me-1"></i>Ver
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
