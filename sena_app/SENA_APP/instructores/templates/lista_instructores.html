@@ -256,7 +256,7 @@
                 <h3>Estadísticas</h3>
                 <p><strong>Total de Instructores Registrados:</strong> {{ total_instructores }}</p>
             </div>
-            <a class="add-button" href="{% url 'admin:instructores_instructor_add' %}">+ Agregar Instructor</a>
+            <a class="add-button" href="{% url 'instructores:crear_instructor' %}">+ Agregar Instructor</a>
         </div>
 
         {% if lista_instructores %}

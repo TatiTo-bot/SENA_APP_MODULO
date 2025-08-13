@@ -242,7 +242,7 @@
                 <h3>Estadísticas</h3>
                 <p><strong>Total de Programas Registrados:</strong> {{ total_programas }}</p>
             </div>
-            <a class="add-button" href="{% url 'admin:programas_programa_add' %}">+ Agregar Programa</a>
+            <a class="add-button" href="{% url 'programas:crear_programa_form' %}">+ Agregar Programa</a>
         </div>
 
         {% if lista_programas %}
@@ -255,7 +255,7 @@
                         </div>
                         <div class="card-title">
                             <h3 class="card-name">{{ programa.nombre }} </h3>
-                            <a href="programa/{{ programa.id}}"p class="card-id">ID: {{ programa.codigo }}</a>
+                            <a href="programa/{{ programa.id}}" class="card-id">ID: {{ programa.codigo }}</a>
                         </div>
                     </div>
                     

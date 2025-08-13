@@ -307,7 +307,7 @@
                 <h3>Estadísticas</h3>
                 <p><strong>Total de Aprendices Registrados:</strong> {{ total_aprendices }}</p>
             </div>
-            <a class="add-button" href="{% url 'admin:aprendices_aprendiz_add' %}">+ Agregar Aprendiz</a>
+            <a class="add-button" href="{% url 'aprendices:crear_aprendiz' %}">+ Agregar Aprendiz</a>
         </div>
         
         {% if lista_aprendices %}

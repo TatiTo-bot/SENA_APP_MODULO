@@ -1,0 +1,193 @@
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        min-height: 100vh;
+    }
+
+    .main-container {
+        background-color: #f8f9fa;
+        border-radius: 25px;
+        margin: 20px;
+        padding: 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background-color: #1e3a8a;
+        color: white;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .btn-primary {
+        background-color: #1e3a8a;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #2c5aa0;
+    }
+
+    .btn-secondary {
+        background-color: #6b7280;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #4b5563;
+    }
+
+    .text-danger {
+        color: #ef4444;
+    }
+
+    .text-muted {
+        color: #6b7280;
+    }
+
+    @media (max-width: 768px) {
+        .main-container {
+            margin: 10px;
+        }
+    }
+</style>
+
+<div class="row justify-content-center main-container">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-user-plus"></i> Agregar Instructor
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.tipo_documento.label }}</label>
+                            {{ form.tipo_documento }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.documento_identidad.label }} <span class="text-danger">*</span></label>
+                            {{ form.documento_identidad }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.nombre.label }} <span class="text-danger">*</span></label>
+                            {{ form.nombre }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.apellido.label }} <span class="text-danger">*</span></label>
+                            {{ form.apellido }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.telefono.label }}</label>
+                            {{ form.telefono }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.correo.label }}</label>
+                            {{ form.correo }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.ciudad.label }}</label>
+                            {{ form.ciudad }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.direccion.label }} <span class="text-danger">*</span></label>
+                            {{ form.direccion }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.nivel_educativo.label }}</label>
+                            {{ form.nivel_educativo }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.especialidad.label }} <span class="text-danger">*</span></label>
+                            {{ form.especialidad }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.anios_experiencia.label }}</label>
+                            {{ form.anios_experiencia }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.activo.label }} <span class="text-danger">*</span></label>
+                            {{ form.activo }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.fecha_vinculacion.label }}</label>
+                            {{ form.fecha_vinculacion }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.fecha_registro.label }}</label>
+                            {{ form.fecha_registro }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.fecha_nacimiento.label }} <span class="text-danger">*</span></label>
+                            {{ form.fecha_nacimiento }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'instructores:lista_instructores' %}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Guardar Instructor
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <small class="text-muted">
+                <i class="fas fa-info-circle"></i> 
+                Los campos marcados con <span class="text-danger">*</span> son obligatorios.
+            </small>
+        </div>
+    </div>
+</div>
+{% if form.errors %}
+    <div class="alert alert-danger">
+        <ul>
+        {% for field in form %}
+            {% for error in field.errors %}
+                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% endblock %}

@@ -4,6 +4,7 @@ from .models import Aprendiz, Curso
 from django.shortcuts import get_object_or_404
 from aprendices.forms import AprendizForm
 from django.views import generic
+from django.urls import reverse_lazy
 
 # Create your views here.
 def aprendices(request):
@@ -63,7 +64,7 @@ def detalle_aprendiz(request,aprendiz_id):
 class AprendizFormView(generic.FormView):
     template_name = "agregar_aprendiz.html"
     form_class = AprendizForm
-    success_url = "../aprendices/"
+    success_url = reverse_lazy('aprendices:lista_aprendices')
     
     def form_valid(self, form):
         form.save()

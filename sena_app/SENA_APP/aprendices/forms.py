@@ -2,13 +2,13 @@ from django import forms
 from .models import Aprendiz
 
 class AprendizForm(forms.Form):
-    documento_identidad = forms.CharField(max_lenght=20, label="Documento de Identidad")
-    nombre = forms.CharField(max_lenght=100, label="Nombre")
-    apellido = forms.CharField(max_lenght=100, label="Apellido")
-    telefono = forms.CharField(max_lenght=10, label="Teléfono")
+    documento_identidad = forms.CharField(max_length=20, label="Documento de Identidad")
+    nombre = forms.CharField(max_length=100, label="Nombre")
+    apellido = forms.CharField(max_length=100, label="Apellido")
+    telefono = forms.CharField(max_length=10, label="Teléfono")
     correo = forms.EmailField(label="Correo Electrónico")
     fecha_nacimiento = forms.DateField(label="Fecha de Nacimiento")
-    ciudad = forms.CharField(max_lenght=100, required=False, label="Ciudad")
+    ciudad = forms.CharField(max_length=100, required=False, label="Ciudad")
     
     def clean(self):
         cleaned_data = super().clean()
