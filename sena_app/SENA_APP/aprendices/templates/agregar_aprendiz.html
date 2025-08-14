@@ -39,6 +39,18 @@
         border-radius: 0 0 20px 20px;
     }
 
+    .section-title {
+        color: #1e3a8a;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     .form-label {
         font-weight: 600;
         color: #374151;
@@ -49,47 +61,75 @@
     .form-control {
         border-radius: 10px;
         border: 1px solid #d1d5db;
-        padding: 10px;
+        padding: 12px 16px;
         font-size: 14px;
-        transition: border-color 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
         width: 100%;
+        background-color: #fff;
     }
 
     .form-control:focus {
         border-color: #2563eb;
-        box-shadow: 0 0 5px rgba(37, 99, 235, 0.4);
+        box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+        background-color: #f8fafc;
+    }
+
+    .form-control:hover {
+        border-color: #9ca3af;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b7280;
+        pointer-events: none;
+        z-index: 5;
+    }
+
+    .form-control.with-icon {
+        padding-right: 40px;
     }
 
     .btn-primary {
         background: linear-gradient(135deg, #2563eb, #1e40af);
         border: none;
         color: white;
-        padding: 10px 24px;
+        padding: 12px 28px;
         border-radius: 30px;
         font-weight: 600;
         box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
         transition: all 0.3s ease;
+        font-size: 15px;
     }
 
     .btn-primary:hover {
         background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
         box-shadow: 0 6px 18px rgba(30, 64, 175, 0.6);
+        transform: translateY(-1px);
     }
 
     .btn-secondary {
         background: linear-gradient(135deg, #6b7280, #4b5563);
         border: none;
         color: white;
-        padding: 10px 24px;
+        padding: 12px 28px;
         border-radius: 30px;
         font-weight: 600;
         box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
         transition: all 0.3s ease;
+        font-size: 15px;
     }
 
     .btn-secondary:hover {
         background: linear-gradient(135deg, #4b5563, #374151);
         box-shadow: 0 6px 18px rgba(75, 85, 99, 0.6);
+        transform: translateY(-1px);
     }
 
     .text-danger {
@@ -98,6 +138,57 @@
 
     .text-muted {
         color: #6b7280;
+    }
+
+    .form-section {
+        background-color: #f8fafc;
+        border-radius: 15px;
+        padding: 24px;
+        margin-bottom: 24px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+
+    .form-section:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .required-indicator {
+        background: linear-gradient(45deg, #ef4444, #dc2626);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: bold;
+        margin-left: 5px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        border-left: 4px solid #2563eb;
+        padding: 16px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .alert {
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        border: 1px solid #fca5a5;
+        color: #991b1b;
     }
 
     @media (max-width: 768px) {
@@ -109,62 +200,166 @@
             font-size: 1.2rem;
             padding: 16px;
         }
+
+        .form-section {
+            padding: 16px;
+        }
+
+        .button-group {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+    }
+
+    /* Animaciones suaves */
+    .form-control, .btn-primary, .btn-secondary, .form-section {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Efectos de hover mejorados */
+    .form-section:hover .section-title {
+        color: #2563eb;
+    }
+
+    /* Estilos para hacer que los campos de Django tengan iconos */
+    .field-wrapper {
+        position: relative;
+    }
+
+    .field-wrapper .form-control {
+        padding-right: 40px;
+    }
+
+    .field-wrapper .input-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b7280;
+        pointer-events: none;
+        z-index: 5;
     }
 </style>
 
 <div class="main-container">
     <div class="card shadow">
         <div class="card-header">
-            <i class="fas fa-user-plus"></i> Agregar Aprendiz
+            <i class="fas fa-user-plus"></i> 
+            <span>Registro de Nuevo Aprendiz</span>
         </div>
         <div class="card-body">
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <strong>Información importante:</strong> Complete todos los campos obligatorios marcados con 
+                <span class="required-indicator">REQUERIDO</span> para registrar al aprendiz correctamente.
+            </div>
+
             <form method="post" novalidate>
                 {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">{{ form.documento_identidad.label }} <span class="text-danger">*</span></label>
-                        {{ form.documento_identidad }}
+                
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Información Personal
+                    </h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                {{ form.documento_identidad.label }} 
+                                <span class="required-indicator">REQUERIDO</span>
+                            </label>
+                            <div class="field-wrapper">
+                                {{ form.documento_identidad }}
+                                <i class="fas fa-id-card input-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                {{ form.fecha_nacimiento.label }} 
+                                <span class="required-indicator">REQUERIDO</span>
+                            </label>
+                            <div class="field-wrapper">
+                                {{ form.fecha_nacimiento }}
+                                <i class="fas fa-calendar-alt input-icon"></i>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">{{ form.nombre.label }} <span class="text-danger">*</span></label>
-                        {{ form.nombre }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                {{ form.nombre.label }} 
+                                <span class="required-indicator">REQUERIDO</span>
+                            </label>
+                            <div class="field-wrapper">
+                                {{ form.nombre }}
+                                <i class="fas fa-user input-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                {{ form.apellido.label }} 
+                                <span class="required-indicator">REQUERIDO</span>
+                            </label>
+                            <div class="field-wrapper">
+                                {{ form.apellido }}
+                                <i class="fas fa-user input-icon"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">{{ form.apellido.label }} <span class="text-danger">*</span></label>
-                        {{ form.apellido }}
-                    </div>
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-address-book"></i>
+                        Información de Contacto
+                    </h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.telefono.label }}</label>
+                            <div class="field-wrapper">
+                                {{ form.telefono }}
+                                <i class="fas fa-phone input-icon"></i>
+                            </div>
+                        </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">{{ form.telefono.label }}</label>
-                        {{ form.telefono }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">{{ form.correo.label }}</label>
-                        {{ form.correo }}
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">{{ form.fecha_nacimiento.label }} <span class="text-danger">*</span></label>
-                        {{ form.fecha_nacimiento }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <label class="form-label">{{ form.ciudad.label }}</label>
-                        {{ form.ciudad }}
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.correo.label }}</label>
+                            <div class="field-wrapper">
+                                {{ form.correo }}
+                                <i class="fas fa-envelope input-icon"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end gap-2">
-                    <br>
+                <div class="form-section">
+                    <h5 class="section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Ubicación
+                    </h5>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">{{ form.ciudad.label }}</label>
+                            <div class="field-wrapper">
+                                {{ form.ciudad }}
+                                <i class="fas fa-city input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
                     <a href="{% url 'aprendices:lista_aprendices' %}" class="btn btn-secondary">
                         <i class="fas fa-times"></i> Cancelar
                     </a>
@@ -179,15 +374,17 @@
     <div class="mt-3 px-4 pb-4">
         <small class="text-muted">
             <i class="fas fa-info-circle"></i>
-            Los campos marcados con <span class="text-danger">*</span> son obligatorios.
+            Los campos marcados con <span class="required-indicator">REQUERIDO</span> son obligatorios.
             <br>
             <br>
         </small>
     </div>
 </div>
+
 {% if form.errors %}
     <div class="alert alert-danger">
-        <ul>
+        <h6><i class="fas fa-exclamation-triangle"></i> Por favor corrija los siguientes errores:</h6>
+        <ul class="mb-0">
         {% for field in form %}
             {% for error in field.errors %}
                 <li><strong>{{ field.label }}:</strong> {{ error }}</li>
@@ -199,5 +396,35 @@
         </ul>
     </div>
 {% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = document.querySelector('.btn-primary');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 2000);
+            });
+        }
+    });
+</script>
 
 {% endblock %}
