@@ -24,7 +24,7 @@ urlpatterns = [
     path('', include('aprendices.urls')),
     path('', include('instructores.urls')),
     path('', include('programas.urls')),
-    path('', include('etp_practica.urls')),
+    path('empresas/', include('etp_practica.urls')),
     path("admin/", admin.site.urls),
 ]
 admin.site.site_header = "Panel Administrativo SENA"

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENA - Sistema de Gestión de Empresas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --sena-blue: #2E5266;
+            --sena-green: #28A745;
+            --sena-orange: #FF6B35;
+            --sena-light-blue: #E8F4FD;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .header-sena {
+            background: linear-gradient(135deg, var(--sena-blue) 0%, #1e3a4a 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .stats-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+        }
+        
+        .stats-card.green::before { background: linear-gradient(90deg, #28a745, #1e7e34); }
+        .stats-card.orange::before { background: linear-gradient(90deg, #fd7e14, #e55a00); }
+        .stats-card.info::before { background: linear-gradient(90deg, #17a2b8, #117a8b); }
+        
+        .company-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .company-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .company-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--sena-blue), #1e3a4a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .btn-action {
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--sena-blue), #1e3a4a);
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            background: linear-gradient(135deg, #1e3a4a, var(--sena-blue));
+            color: white;
+        }
+        
+        .search-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-weight: 700;
+            color: var(--sena-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header-sena">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <i class="fas fa-building fa-3x"></i>
+                        </div>
+                        <div>
+                            <h1 class="mb-0">SENA - Sistema de Gestión de Empresas</h1>
+                            <p class="mb-0 opacity-75">Plataforma integral para la gestión de empresas y etapas productivas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn btn-light btn-lg">
+                        <i class="fas fa-plus me-2"></i>Nueva Empresa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="text-primary mb-0 fw-bold">150</h3>
+                                <p class="text-muted mb-0">Total Empresas</p>
+                            </div>
+                            <div class="text-primary opacity-50">
+                                <i class="fas fa-building fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card green">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="text-success mb-0 fw-bold">128</h3>
+                                <p class="text-muted mb-0">Empresas Activas</p>
+                            </div>
+                            <div class="text-success opacity-50">
+                                <i class="fas fa-check-circle fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card orange">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="text-warning mb-0 fw-bold">45</h3>
+                                <p class="text-muted mb-0">En Proceso</p>
+                            </div>
+                            <div class="text-warning opacity-50">
+                                <i class="fas fa-clock fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="text-info mb-0 fw-bold">32</h3>
+                                <p class="text-muted mb-0">Convenios Activos</p>
+                            </div>
+                            <div class="text-info opacity-50">
+                                <i class="fas fa-handshake fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-light border-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-0 bg-light" 
+                                placeholder="Buscar empresas por nombre, NIT, ciudad..." id="searchInput">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select form-select-lg border-0 bg-light">
+                        <option value="">Todas las ciudades</option>
+                        <option value="bogota">Bogotá</option>
+                        <option value="medellin">Medellín</option>
+                        <option value="cali">Cali</option>
+                        <option value="barranquilla">Barranquilla</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Companies Grid -->
+        <div class="row">
+            <!-- Company Card 1 -->
+            <div class="col-lg-6 mb-4">
+                <div class="company-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start">
+                            <div class="company-avatar me-3">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0 fw-bold">TechCorp Solutions S.A.S</h5>
+                                    <span class="status-badge bg-success text-white">Activa</span>
+                                </div>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-id-card me-1"></i>NIT: 900.123.456-7
+                                </p>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Bogotá D.C. - Zona Rosa
+                                </p>
+                                <p class="text-muted mb-3">
+                                    <i class="fas fa-envelope me-1"></i>contacto@techcorp.com
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex gap-2">
+                                        <span class="badge bg-primary">15 Aprendices</span>
+                                        <span class="badge bg-info">3 Programas</span>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-success">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Card 2 -->
+            <div class="col-lg-6 mb-4">
+                <div class="company-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start">
+                            <div class="company-avatar me-3">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0 fw-bold">Manufactura Industrial Ltda</h5>
+                                    <span class="status-badge bg-success text-white">Activa</span>
+                                </div>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-id-card me-1"></i>NIT: 800.654.321-9
+                                </p>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Medellín - Zona Industrial
+                                </p>
+                                <p class="text-muted mb-3">
+                                    <i class="fas fa-envelope me-1"></i>info@manufactura.com
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex gap-2">
+                                        <span class="badge bg-primary">8 Aprendices</span>
+                                        <span class="badge bg-info">2 Programas</span>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-success">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Card 3 -->
+            <div class="col-lg-6 mb-4">
+                <div class="company-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start">
+                            <div class="company-avatar me-3">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0 fw-bold">Retail & Commerce S.A</h5>
+                                    <span class="status-badge bg-warning text-dark">En Proceso</span>
+                                </div>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-id-card me-1"></i>NIT: 700.987.654-3
+                                </p>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Cali - Centro Comercial
+                                </p>
+                                <p class="text-muted mb-3">
+                                    <i class="fas fa-envelope me-1"></i>gerencia@retailcommerce.com
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex gap-2">
+                                        <span class="badge bg-primary">12 Aprendices</span>
+                                        <span class="badge bg-info">4 Programas</span>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-success">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Card 4 -->
+            <div class="col-lg-6 mb-4">
+                <div class="company-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start">
+                            <div class="company-avatar me-3">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="mb-0 fw-bold">DevSoft Innovations</h5>
+                                    <span class="status-badge bg-success text-white">Activa</span>
+                                </div>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-id-card me-1"></i>NIT: 900.456.789-1
+                                </p>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Barranquilla - Zona Norte
+                                </p>
+                                <p class="text-muted mb-3">
+                                    <i class="fas fa-envelope me-1"></i>contact@devsoft.co
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex gap-2">
+                                        <span class="badge bg-primary">20 Aprendices</span>
+                                        <span class="badge bg-info">5 Programas</span>
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-success">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Paginación de empresas">
+                <ul class="pagination pagination-lg">
+                    <li class="page-item disabled">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                    <li class="page-item active">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const companies = document.querySelectorAll('.company-card');
+            
+            companies.forEach(company => {
+                const text = company.textContent.toLowerCase();
+                const parent = company.parentElement;
+                if (text.includes(searchTerm)) {
+                    parent.style.display = '';
+                } else {
+                    parent.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
