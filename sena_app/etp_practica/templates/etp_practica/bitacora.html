@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácoras de Seguimiento - SENA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --sena-blue: #2E5266;
+            --sena-green: #28A745;
+            --sena-purple: #6f42c1;
+            --sena-light: #E8F4FD;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--sena-green) 0%, #1e7e34 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .stats-overview {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .stat-card.sin-iniciar { background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-color: #2196f3; }
+        .stat-card.desertaron { background: linear-gradient(135deg, #ffebee, #ffcdd2); border-color: #f44336; }
+        .stat-card.enviadas { background: linear-gradient(135deg, #f3e5f5, #e1bee7); border-color: #9c27b0; }
+        .stat-card.revisadas { background: linear-gradient(135deg, #e8f5e8, #c8e6c9); border-color: #4caf50; }
+        .stat-card.observaciones { background: linear-gradient(135deg, #fff8e1, #ffecb3); border-color: #ff9800; }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+        
+        .bitacora-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            background: white;
+            overflow: hidden;
+        }
+        
+        .bitacora-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .status-indicator {
+            width: 5px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .status-lectiva { background: #2196f3; }
+        .status-productiva { background: #9c27b0; }
+        .status-finalizado { background: #4caf50; }
+        .status-retirado { background: #f44336; }
+        .status-aplazado { background: #ff9800; }
+        
+        .student-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sena-green), #1e7e34);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        
+        .progress-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(var(--sena-green) 0% 75%, #e9ecef 75% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .progress-ring::before {
+            content: '75%';
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--sena-green);
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .filter-tabs {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .filter-tabs .nav-pills .nav-link {
+            border-radius: 10px;
+            color: #6c757d;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            margin-right: 0.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-tabs .nav-pills .nav-link.active {
+            background: var(--sena-green);
+            color: white;
+            border-color: var(--sena-green);
+        }
+        
+        .filter-tabs .nav-pills .nav-link:hover {
+            background: rgba(40, 167, 69, 0.1);
+            border-color: var(--sena-green);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="container">
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-white-50 text-decoration-none">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-white-50 text-decoration-none">Empresas</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-white-50 text-decoration-none">TechCorp Solutions</a>
+                        </li>
+                        <li class="breadcrumb-item active text-white">Bitácoras de Seguimiento</li>
+                    </ol>
+                </nav>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="mb-1">
+                            <i class="fas fa-book me-2"></i>
+                            Bitácoras de Seguimiento
+                        </h1>
+                        <p class="mb-0 opacity-75">TechCorp Solutions S.A.S - Control y seguimiento de etapas productivas</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-light btn-lg">
+                            <i class="fas fa-download me-2"></i>Exportar Reporte
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Statistics Overview -->
+            <div class="stats-overview">
+                <div class="row">
+                    <div class="col-lg-2 col-md-4 mb-3">
+                        <div class="stat-card sin-iniciar">
+                            <div class="stat-number text-primary">8</div>
+                            <div class="stat-label">Sin Iniciar</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 mb-3">
+                        <div class="stat-card desertaron">
+                            <div class="stat-number text-danger">2</div>
+                            <div class="stat-label">Desertaron</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 mb-3">
+                        <div class="stat-card enviadas">
+                            <div class="stat-number text-purple">15</div>
+                            <div class="stat-label">Enviadas</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 mb-3">
+                        <div class="stat-card revisadas">
+                            <div class="stat-number text-success">12</div>
+                            <div class="stat-label">Revisadas</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 mb-3">
+                        <div class="stat-card observaciones">
+                            <div class="stat-number text-warning">5</div>
+                            <div class="stat-label">Con Observaciones</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-number text-info">85%</div>
+                            <div class="stat-label">Tasa de Éxito</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <ul class="nav nav-pills d-flex flex-wrap justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#todas" data-bs-toggle="pill">
+                            <i class="fas fa-list me-2"></i>Todas (42)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sin-iniciar" data-bs-toggle="pill">
+                            <i class="fas fa-play-circle me-2"></i>Sin Iniciar (8)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#enviadas" data-bs-toggle="pill">
+                            <i class="fas fa-paper-plane me-2"></i>Enviadas (15)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#revisadas" data-bs-toggle="pill">
+                            <i class="fas fa-check-circle me-2"></i>Revisadas (12)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#observaciones" data-bs-toggle="pill">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Con Observaciones (5)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bitácoras List -->
+            <div class="row">
+                <!-- Bitácora Card 1 -->
+                <div class="col-12 mb-3">
+                    <div class="bitacora-card position-relative">
+                        <div class="status-indicator status-productiva"></div>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="student-avatar">
+                                            JP
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">Juan Pablo Martínez</h5>
+                                            <p class="text-muted mb-0">Tecnología en Desarrollo de Software</p>
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>Inicio: 15 Mar 2024 | 
+                                                <i class="fas fa-user-tie ms-2 me-1"></i>Tutor: Ana García
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <span class="badge bg-purple fs-6 px-3 py-2">En Productiva</span>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="progress-ring"></div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Ver Detalle
+                                        </button>
+                                        <button class="btn btn-outline-success btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bitácora Card 2 -->
+                <div class="col-12 mb-3">
+                    <div class="bitacora-card position-relative">
+                        <div class="status-indicator status-finalizado"></div>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="student-avatar">
+                                            MR
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">María Rodríguez Silva</h5>
+                                            <p class="text-muted mb-0">Tecnología en Marketing Digital</p>
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>Finalizado: 20 Jun 2024 | 
+                                                <i class="fas fa-user-tie ms-2 me-1"></i>Tutor: Carlos López
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <span class="badge bg-success fs-6 px-3 py-2">Finalizado</span>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(var(--sena-green) 0% 100%, #e9ecef 100% 100%); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="font-size: 0.8rem; font-weight: bold; color: var(--sena-green); background: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">100%</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Ver Detalle
+                                        </button>
+                                        <button class="btn btn-outline-info btn-sm">
+                                            <i class="fas fa-certificate"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bitácora Card 3 -->
+                <div class="col-12 mb-3">
+                    <div class="bitacora-card position-relative">
+                        <div class="status-indicator status-aplazado"></div>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="student-avatar">
+                                            LT
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">Luis Torres Gómez</h5>
+                                            <p class="text-muted mb-0">Tecnología en Diseño Gráfico</p>
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>Inicio: 10 Feb 2024 | 
+                                                <i class="fas fa-user-tie ms-2 me-1"></i>Tutor: Diana Ruiz
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <span class="badge bg-warning fs-6 px-3 py-2">Con Observaciones</span>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#ff9800 0% 45%, #e9ecef 45% 100%); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="font-size: 0.8rem; font-weight: bold; color: #ff9800; background: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">45%</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Ver Detalle
+                                        </button>
+                                        <button class="btn btn-outline-warning btn-sm">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bitácora Card 4 -->
+                <div class="col-12 mb-3">
+                    <div class="bitacora-card position-relative">
+                        <div class="status-indicator status-lectiva"></div>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="student-avatar">
+                                            SM
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">Sandra Morales Castro</h5>
+                                            <p class="text-muted mb-0">Tecnología en Análisis de Sistemas</p>
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>Asignado: 01 Ago 2024 | 
+                                                <i class="fas fa-user-tie ms-2 me-1"></i>Tutor: Pedro Silva
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <span class="badge bg-primary fs-6 px-3 py-2">Sin Iniciar</span>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div style="width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#2196f3 0% 15%, #e9ecef 15% 100%); display: flex; align-items: center; justify-content: center; position: relative;">
+                                        <div style="font-size: 0.8rem; font-weight: bold; color: #2196f3; background: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">15%</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Ver Detalle
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-play"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Paginación de bitácoras">
+                    <ul class="pagination">
+                        <li class="page-item disabled">
+                            <span class="page-link">Anterior</span>
+                        </li>
+                        <li class="page-item active">
+                            <span class="page-link">1</span>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Filter functionality
+        document.querySelectorAll('[data-bs-toggle="pill"]').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = this.getAttribute('href').substring(1);
+                
+                // Filter logic would go here
+                console.log('Filtering by:', target);
+                
+                // Update active state
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Progress ring animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressRings = document.querySelectorAll('.progress-ring');
+            progressRings.forEach(ring => {
+                ring.style.animation = 'fadeIn 0.5s ease-in-out';
+            });
+        });
+    </script>
+</body>
+</html>

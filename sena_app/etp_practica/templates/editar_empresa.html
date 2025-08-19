@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Empresa - SENA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --sena-blue: #2E5266;
+            --sena-green: #28A745;
+            --sena-orange: #fd7e14;
+            --sena-purple: #6f42c1;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--sena-orange) 0%, #e55a00 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .edit-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: white;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .card-header-custom {
+            background: linear-gradient(135deg, var(--sena-orange), #e55a00);
+            color: white;
+            padding: 1.5rem;
+            border: none;
+        }
+        
+        .form-section {
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--sena-orange);
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .form-control:focus {
+            border-color: var(--sena-orange);
+            box-shadow: 0 0 0 0.2rem rgba(253, 126, 20, 0.25);
+            background: white;
+        }
+        
+        .form-control.is-valid {
+            border-color: var(--sena-green);
+            background: rgba(40, 167, 69, 0.05);
+        }
+        
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.05);
+        }
+        
+        .input-group-custom {
+            position: relative;
+        }
+        
+        .input-group-custom .form-control {
+            padding-left: 3rem;
+        }
+        
+        .input-group-custom i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            z-index: 3;
+        }
+        
+        .btn-custom {
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, var(--sena-green), #1e7e34);
+            color: white;
+        }
+        
+        .btn-save:hover {
+            background: linear-gradient(135deg, #1e7e34, var(--sena-green));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background: #5a6268;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #c82333, #dc3545);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+        }
+        
+        .status-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .status-badge {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .activity-log {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .log-item {
+            display: flex;
+            align-items: start;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .log-item:last-child {
+            border-bottom: none;
+        }
+        
+        .log-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--sena-orange);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--sena-orange);
+            transform: translateY(-3px);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--sena-orange);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            font-weight: 600;
+        }
+        
+        .changes-indicator {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--sena-orange);
+            color: white;
+            padding: 1rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3);
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+        
+        .changes-indicator.show {
+            display: flex;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .validation-feedback {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .valid-feedback {
+            color: var(--sena-green);
+        }
+        
+        .invalid-feedback {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="container">
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-white-50 text-decoration-none">Empresas</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-white-50 text-decoration-none">TechCorp Solutions</a>
+                        </li>
+                        <li class="breadcrumb-item active text-white">Editar Empresa</li>
+                    </ol>
+                </nav>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="mb-1">
+                            <i class="fas fa-edit me-2"></i>
+                            Editar Empresa
+                        </h1>
+                        <p class="mb-0 opacity-75">Actualizar información de TechCorp Solutions S.A.S</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-light btn-lg" onclick="showDeleteModal()">
+                            <i class="fas fa-trash me-2"></i>Eliminar
+                        </button>
+                        <button class="btn btn-warning btn-lg">
+                            <i class="fas fa-history me-2"></i>Historial
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-container">
+            <!-- Company Statistics -->
+            <div class="company-stats">
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Aprendices Activos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Bitácoras Pendientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Programas Asignados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Años de Alianza</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Left Column - Form -->
+                <div class="col-lg-8">
+                    <!-- Status Section -->
+                    <div class="status-section">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-2">
+                                    <i class="fas fa-info-circle me-2"></i>Estado de la Empresa
+                                </h5>
+                                <span class="status-badge bg-success text-white">Empresa Activa</span>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted">
+                                    <strong>Última actualización:</strong><br>
+                                    15 de Marzo, 2024 - 10:30 AM
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Form -->
+                    <div class="edit-card">
+                        <div class="card-header-custom">
+                            <h4 class="mb-0">
+                                <i class="fas fa-building me-2"></i>
+                                Información de la Empresa
+                            </h4>
+                        </div>
+                        <div class="form-section">
+                            <form id="editEmpresaForm" method="post">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                <i class="fas fa-building"></i>Nombre de la Empresa
+                                            </label>
+                                            <div class="input-group-custom">
+                                                <i class="fas fa-building"></i>
+                                                <input type="text" class="form-control" id="nombre" name="nombre" 
+                                                       value="TechCorp Solutions S.A.S" required>
+                                            </div>
+                                            <div class="invalid-feedback">Por favor, ingrese el nombre de la empresa</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                <i class="fas fa-id-card"></i>NIT
+                                            </label>
+                                            <div class="input-group-custom">
+                                                <i class="fas fa-id-card"></i>
+                                                <input type="text" class="form-control" id="nit" name="nit" 
+                                                       value="900.123.456-7" required>
+                                            </div>
+                                            <div class="invalid-feedback">Por favor, ingrese un NIT válido</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-location-dot"></i>Dirección
+                                    </label>
+                                    <div class="input-group-custom">
+                                        <i class="fas fa-location-dot"></i>
+                                        <input type="text" class="form-control" id="direccion" name="direccion" 
+                                               value="Carrera 15 #93-47, Zona Rosa" required>
+                                    </div>
+                                    <div class="invalid-feedback">Por favor, ingrese la dirección completa</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                <i class="fas fa-map-marker-alt"></i>Ciudad
+                                            </label>
+                                            <div class="input-group-custom">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <select class="form-control" id="ciudad" name="ciudad" required>
+                                                    <option value="Bogotá D.C." selected>Bogotá D.C.</option>
+                                                    <option value="Medellín">Medellín</option>
+                                                    <option value="Cali">Cali</option>
+                                                    <option value="Barranquilla">Barranquilla</option>
+                                                    <option value="Cartagena">Cartagena</option>
+                                                    <option value="Bucaramanga">Bucaramanga</option>
+                                                    <option value="Pereira">Pereira</option>
+                                                    <option value="Tunja">Tunja</option>
+                                                </select>
+                                            </div>
+                                            <div class="invalid-feedback">Por favor, seleccione una ciudad</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                <i class="fas fa-phone"></i>Teléfono
+                                            </label>
+                                            <div class="input-group-custom">
+                                                <i class="fas fa-phone"></i>
+                                                <input type="tel" class="form-control" id="telefono" name="telefono" 
+                                                       value="+57 1 234-5678" required>
+                                            </div>
+                                            <div class="invalid-feedback">Por favor, ingrese un teléfono válido</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                <i class="fas fa-envelope"></i>Correo Electrónico
+                                            </label>
+                                            <div class="input-group-custom">
+                                                <i class="fas fa-envelope"></i>
+                                                <input type="email" class="form-control" id="email" name="email" 
+                                                       value="contacto@techcorp.com" required>
+                                            </div>
+                                            <div class="invalid-feedback">Por favor, ingrese un email válido</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">
+                                                <i class="fas fa-globe"></i>Sitio Web
+                                            </label>
+                                            <div class="input-group-custom">
+                                                <i class="fas fa-globe"></i>
+                                                <input type="url" class="form-control" id="sitio_web" name="sitio_web" 
+                                                       value="https://www.techcorp.com">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-industry"></i>Sector Empresarial
+                                    </label>
+                                    <div class="input-group-custom">
+                                        <i class="fas fa-industry"></i>
+                                        <select class="form-control" id="sector" name="sector" required>
+                                            <option value="Tecnología" selected>Tecnología</option>
+                                            <option value="Manufactura">Manufactura</option>
+                                            <option value="Comercio">Comercio</option>
+                                            <option value="Servicios">Servicios</option>
+                                            <option value="Construcción">Construcción</option>
+                                            <option value="Salud">Salud</option>
+                                            <option value="Educación">Educación</option>
+                                            <option value="Financiero">Financiero</option>
+                                            <option value="Otro">Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-sticky-note"></i>Notas Adicionales
+                                    </label>
+                                    <textarea class="form-control" id="notas" name="notas" rows="4" 
+                                              placeholder="Información adicional sobre la empresa...">Empresa líder en desarrollo de software y soluciones tecnológicas. Excelente ambiente de trabajo para aprendices SENA.</textarea>
+                                </div>
+
+                                <div class="d-flex gap-3 justify-content-end mt-4">
+                                    <button type="button" class="btn btn-custom btn-cancel" onclick="cancelEdit()">
+                                        <i class="fas fa-times me-2"></i>Cancelar
+                                    </button>
+                                    <button type="submit" class="btn btn-custom btn-save">
+                                        <i class="fas fa-save me-2"></i>Guardar Cambios
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Activity Log -->
+                <div class="col-lg-4">
+                    <div class="activity-log">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-history me-2"></i>Actividad Reciente
+                        </h5>
+                        
+                        <div class="log-item">
+                            <div class="log-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold">Nuevo aprendiz asignado</div>
+                                <small class="text-muted">Juan Pablo Martínez - Desarrollo de Software</small>
+                                <div class="text-muted small">Hace 2 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="log-item">
+                            <div class="log-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold">Bitácora actualizada</div>
+                                <small class="text-muted">María Rodríguez - Semana 18</small>
+                                <div class="text-muted small">Ayer a las 3:45 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="log-item">
+                            <div class="log-icon">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold">Información actualizada</div>
+                                <small class="text-muted">Cambio de teléfono de contacto</small>
+                                <div class="text-muted small">15 Mar 2024</div>
+                            </div>
+                        </div>
+
+                        <div class="log-item">
+                            <div class="log-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold">Convenio renovado</div>
+                                <small class="text-muted">Extensión por 2 años más</small>
+                                <div class="text-muted small">10 Mar 2024</div>
+                            </div>
+                        </div>
+
+                        <div class="log-item">
+                            <div class="log-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold">Aprendiz certificado</div>
+                                <small class="text-muted">Luis Torres - Diseño Gráfico</small>
+                                <div class="text-muted small">5 Mar 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Changes Indicator -->
+    <div class="changes-indicator" id="changesIndicator">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Cambios sin guardar</span>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-exclamation-triangle fa-4x text-warning"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">¿Eliminar Empresa?</h3>
+                    <p class="text-muted mb-4">
+                        Esta acción eliminará permanentemente la empresa <strong>TechCorp Solutions S.A.S</strong> 
+                        y todos sus datos asociados, incluyendo aprendices y bitácoras.
+                        <br><br>
+                        <strong>Esta acción no se puede deshacer.</strong>
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                            <i class="fas fa-trash me-2"></i>Sí, Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle fa-4x text-success"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">¡Cambios Guardados!</h3>
+                    <p class="text-muted mb-4">
+                        La información de la empresa ha sido actualizada correctamente.
+                    </p>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <i class="fas fa-check me-2"></i>Continuar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let originalFormData = {};
+        let hasUnsavedChanges = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Store original form data
+            const form = document.getElementById('editEmpresaForm');
+            const formData = new FormData(form);
+            for (let [key, value] of formData.entries()) {
+                originalFormData[key] = value;
+            }
+
+            // Track form changes
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', handleFormChange);
+                input.addEventListener('change', handleFormChange);
+            });
+
+            // Real-time validation
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.hasAttribute('required')) {
+                        if (!this.value.trim()) {
+                            this.classList.add('is-invalid');
+                            this.classList.remove('is-valid');
+                        } else {
+                            this.classList.remove('is-invalid');
+                            this.classList.add('is-valid');
+                        }
+                    }
+                });
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (validateForm()) {
+                    saveChanges();
+                }
+            });
+
+            // Warn before leaving with unsaved changes
+            window.addEventListener('beforeunload', function(e) {
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+
+            // NIT formatting
+            document.getElementById('nit').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 9) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
+                }
+                e.target.value = value;
+            });
+        });
+
+        function handleFormChange() {
+            hasUnsavedChanges = true;
+            document.getElementById('changesIndicator').classList.add('show');
+        }
+
+        function validateForm() {
+            const form = document.getElementById('editEmpresaForm');
+            const inputs = form.querySelectorAll('input[required], select[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+            });
+
+            return isValid;
+        }
+
+        function saveChanges() {
+            // Simulate saving
+            setTimeout(() => {
+                hasUnsavedChanges = false;
+                document.getElementById('changesIndicator').classList.remove('show');
+                
+                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            }, 1000);
+        }
+
+        function cancelEdit() {
+            if (hasUnsavedChanges) {
+                if (confirm('¿Está seguro de que desea cancelar? Se perderán todos los cambios no guardados.')) {
+                    // Restore original values
+                    for (let [key, value] of Object.entries(originalFormData)) {
+                        const input = document.querySelector(`[name="${key}"]`);
+                        if (input) {
+                            input.value = value;
+                        }
+                    }
+                    hasUnsavedChanges = false;
+                    document.getElementById('changesIndicator').classList.remove('show');
+                    window.history.back();
+                }
+            } else {
+                window.history.back();
+            }
+        }
+
+        function showDeleteModal() {
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+
+        function confirmDelete() {
+            // Simulate deletion
+            setTimeout(() => {
+                bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+                alert('Empresa eliminada correctamente');
+                window.location.href = '/empresas/';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>50 text-decoration-none">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-white-
