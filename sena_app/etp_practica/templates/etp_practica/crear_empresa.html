@@ -327,7 +327,6 @@
     </style>
 </head>
 <body>
-    <!-- Floating Shapes -->
     <div class="floating-shapes">
         <div class="shape"></div>
         <div class="shape"></div>
@@ -336,7 +335,6 @@
 
     <div class="container">
         <div class="form-container">
-            <!-- Form Header -->
             <div class="form-header">
                 <div class="company-icon">
                     <i class="fas fa-building"></i>
@@ -345,9 +343,7 @@
                 <p class="mb-0 opacity-75">Complete la información para registrar una nueva empresa en el sistema SENA</p>
             </div>
 
-            <!-- Form Body -->
             <div class="form-body">
-                <!-- Step Indicator -->
                 <div class="step-indicator">
                     <div class="step active" data-step="1">1</div>
                     <div class="step" data-step="2">2</div>
@@ -355,7 +351,8 @@
                 </div>
 
                 <form id="empresaForm" method="post">
-                    <!-- Step 1: Basic Information -->
+                    {% csrf_token %}
+                    
                     <div class="form-step active" id="step1">
                         <div class="text-center mb-4">
                             <h3 class="fw-bold">Información Básica</h3>
@@ -369,7 +366,7 @@
                                     <div class="input-group-icon">
                                         <i class="fas fa-building"></i>
                                         <input type="text" class="form-control" id="nombre" name="nombre" 
-                                               placeholder="Ej: TechCorp Solutions S.A.S" required>
+                                                placeholder="Ej: TechCorp Solutions S.A.S" required>
                                     </div>
                                     <div class="invalid-feedback">Por favor, ingrese el nombre de la empresa</div>
                                 </div>
@@ -380,7 +377,7 @@
                                     <div class="input-group-icon">
                                         <i class="fas fa-id-card"></i>
                                         <input type="text" class="form-control" id="nit" name="nit" 
-                                               placeholder="Ej: 900.123.456-7" required>
+                                                placeholder="Ej: 900.123.456-7" required>
                                     </div>
                                     <div class="invalid-feedback">Por favor, ingrese un NIT válido</div>
                                 </div>
@@ -392,7 +389,7 @@
                             <div class="input-group-icon">
                                 <i class="fas fa-location-dot"></i>
                                 <input type="text" class="form-control" id="direccion" name="direccion" 
-                                       placeholder="Ej: Carrera 15 #93-47, Zona Rosa" required>
+                                        placeholder="Ej: Carrera 15 #93-47, Zona Rosa" required>
                             </div>
                             <div class="invalid-feedback">Por favor, ingrese la dirección completa</div>
                         </div>
@@ -425,7 +422,7 @@
                         </div>
                     </div>
 
-                    <!-- Step 2: Contact Information -->
+
                     <div class="form-step" id="step2">
                         <div class="text-center mb-4">
                             <h3 class="fw-bold">Información de Contacto</h3>
@@ -439,7 +436,7 @@
                                     <div class="input-group-icon">
                                         <i class="fas fa-phone"></i>
                                         <input type="tel" class="form-control" id="telefono" name="telefono" 
-                                               placeholder="Ej: +57 1 234-5678" required>
+                                                placeholder="Ej: +57 1 234-5678" required>
                                     </div>
                                     <div class="invalid-feedback">Por favor, ingrese un teléfono válido</div>
                                 </div>
@@ -450,7 +447,7 @@
                                     <div class="input-group-icon">
                                         <i class="fas fa-mobile-alt"></i>
                                         <input type="tel" class="form-control" id="telefono_secundario" name="telefono_secundario" 
-                                               placeholder="Opcional">
+                                                placeholder="Opcional">
                                     </div>
                                 </div>
                             </div>
@@ -461,7 +458,7 @@
                             <div class="input-group-icon">
                                 <i class="fas fa-envelope"></i>
                                 <input type="email" class="form-control" id="email" name="email" 
-                                       placeholder="Ej: contacto@empresa.com" required>
+                                        placeholder="Ej: contacto@empresa.com" required>
                             </div>
                             <div class="invalid-feedback">Por favor, ingrese un email válido</div>
                         </div>
@@ -471,7 +468,7 @@
                             <div class="input-group-icon">
                                 <i class="fas fa-globe"></i>
                                 <input type="url" class="form-control" id="sitio_web" name="sitio_web" 
-                                       placeholder="Ej: https://www.empresa.com">
+                                        placeholder="Ej: https://www.empresa.com">
                             </div>
                         </div>
 
@@ -505,7 +502,6 @@
                         </div>
                     </div>
 
-                    <!-- Step 3: Review and Submit -->
                     <div class="form-step" id="step3">
                         <div class="text-center mb-4">
                             <h3 class="fw-bold">Confirmación</h3>
@@ -563,7 +559,7 @@
                                 <i class="fas fa-arrow-left me-2"></i> Anterior
                             </button>
                             <button type="submit" class="btn btn-step btn-submit">
-                                <i class="fas fa-save me-2"></i> Registrar Empresa
+                                <i class="fas fa-save me-2" ></i> Registrar Empresa
                             </button>
                         </div>
                     </div>
@@ -572,7 +568,7 @@
         </div>
     </div>
 
-    <!-- Success Modal -->
+
     <div class="modal fade" id="successModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
@@ -589,7 +585,7 @@
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             Registrar Otra
                         </button>
-                        <a href="#" class="btn btn-primary">
+                        <a href="{% url 'etp_practica:lista_empresas' %}" class="btn btn-primary">
                             Ver Lista de Empresas
                         </a>
                     </div>
@@ -606,16 +602,13 @@
         function nextStep() {
             if (validateStep(currentStep)) {
                 if (currentStep < totalSteps) {
-                    // Hide current step
                     document.getElementById(`step${currentStep}`).classList.remove('active');
                     document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('completed');
                     
-                    // Show next step
                     currentStep++;
                     document.getElementById(`step${currentStep}`).classList.add('active');
                     document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
                     
-                    // Update preview if on last step
                     if (currentStep === 3) {
                         updatePreview();
                     }
@@ -625,11 +618,9 @@
 
         function prevStep() {
             if (currentStep > 1) {
-                // Hide current step
                 document.getElementById(`step${currentStep}`).classList.remove('active');
                 document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
                 
-                // Show previous step
                 currentStep--;
                 document.getElementById(`step${currentStep}`).classList.add('active');
                 document.querySelector(`.step[data-step="${currentStep + 1}"]`).classList.remove('completed');
@@ -664,23 +655,6 @@
             document.getElementById('preview-sector').textContent = document.getElementById('sector').value;
         }
 
-        // Form submission
-        document.getElementById('empresaForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate final step
-            if (validateStep(3) && document.getElementById('terminos').checked) {
-                // Simulate form submission
-                setTimeout(() => {
-                    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                    successModal.show();
-                }, 1000);
-            } else if (!document.getElementById('terminos').checked) {
-                document.getElementById('terminos').classList.add('is-invalid');
-            }
-        });
-
-        // Real-time validation
         document.addEventListener('DOMContentLoaded', function() {
             const inputs = document.querySelectorAll('input, select');
             
@@ -705,7 +679,7 @@
                 });
             });
 
-            // NIT formatting
+
             document.getElementById('nit').addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 if (value.length >= 9) {
@@ -714,7 +688,6 @@
                 e.target.value = value;
             });
 
-            // Phone formatting
             const phoneInputs = document.querySelectorAll('input[type="tel"]');
             phoneInputs.forEach(input => {
                 input.addEventListener('input', function(e) {
@@ -725,14 +698,39 @@
                     e.target.value = value;
                 });
             });
-        });
 
-        // Checkbox validation
-        document.getElementById('terminos').addEventListener('change', function() {
-            if (this.checked) {
-                this.classList.remove('is-invalid');
-            }
+            document.getElementById('terminos').addEventListener('change', function() {
+                if (this.checked) {
+                    this.classList.remove('is-invalid');
+                }
+            });
+
+            document.getElementById('empresaForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!document.getElementById('terminos').checked) {
+                    document.getElementById('terminos').classList.add('is-invalid');
+                    return;
+                }
+
+                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            });
         });
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = document.querySelector('.btn-primary');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 2000);
+            });
+        }
     </script>
 </body>
 </html>

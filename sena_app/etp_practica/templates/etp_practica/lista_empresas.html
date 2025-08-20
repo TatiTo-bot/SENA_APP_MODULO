@@ -13,19 +13,42 @@
             --sena-orange: #FF6B35;
             --sena-light-blue: #E8F4FD;
         }
-        
+
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        /* Estilos del Header y Botón Agregar */
         .header-sena {
             background: linear-gradient(135deg, var(--sena-blue) 0%, #1e3a4a 100%);
             color: white;
             padding: 2rem 0;
             margin-bottom: 2rem;
         }
-        
+
+        .add-button {
+            background: linear-gradient(135deg, var(--sena-blue), #1e3a4a);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(46, 82, 102, 0.3);
+            display: inline-block;
+        }
+
+        .add-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 82, 102, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Estilos de las Tarjetas de Estadísticas */
         .stats-card {
             border: none;
             border-radius: 12px;
@@ -34,12 +57,12 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         .stats-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
-        
+
         .stats-card::before {
             content: '';
             position: absolute;
@@ -49,11 +72,11 @@
             height: 4px;
             background: linear-gradient(90deg, #007bff, #0056b3);
         }
-        
+
         .stats-card.green::before { background: linear-gradient(90deg, #28a745, #1e7e34); }
         .stats-card.orange::before { background: linear-gradient(90deg, #fd7e14, #e55a00); }
-        .stats-card.info::before { background: linear-gradient(90deg, #17a2b8, #117a8b); }
-        
+
+        /* Estilos de las Tarjetas de Empresa */
         .company-card {
             border: none;
             border-radius: 12px;
@@ -61,12 +84,12 @@
             transition: all 0.2s ease;
             margin-bottom: 1rem;
         }
-        
+
         .company-card:hover {
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             transform: translateY(-2px);
         }
-        
+
         .company-avatar {
             width: 60px;
             height: 60px;
@@ -78,7 +101,15 @@
             color: white;
             font-size: 1.5rem;
         }
-        
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Estilos de Botones de Acción */
         .btn-action {
             border: none;
             border-radius: 8px;
@@ -86,41 +117,41 @@
             font-weight: 500;
             transition: all 0.2s ease;
         }
-        
+
         .btn-primary-custom {
             background: linear-gradient(135deg, var(--sena-blue), #1e3a4a);
             color: white;
         }
-        
+
         .btn-primary-custom:hover {
             background: linear-gradient(135deg, #1e3a4a, var(--sena-blue));
             color: white;
         }
         
-        .search-container {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-            margin-bottom: 2rem;
+        .alert {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #e74c3c;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.2);
         }
-        
-        .page-title {
-            font-weight: 700;
-            color: var(--sena-blue);
-            margin-bottom: 0.5rem;
-        }
-        
-        .status-badge {
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
+        .alert p { margin: 0; font-size: 1.1em; }
+
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            body { padding: 10px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header-sena">
         <div class="container">
             <div class="row align-items-center">
@@ -136,23 +167,22 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-end">
-                    <button class="btn btn-light btn-lg">
-                        <i class="fas fa-plus me-2"></i>Nueva Empresa
-                    </button>
+                    <a class="btn btn-light btn-lg add-button" href="{% url 'etp_practica:crear_empresa' %}">
+                        <i class="fas fa-plus"></i> Agregar Empresa
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="container">
-        <!-- Statistics Cards -->
         <div class="row mb-4">
             <div class="col-lg-3 col-md-6 mb-3">
                 <div class="stats-card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h3 class="text-primary mb-0 fw-bold">150</h3>
+                                <h3 class="text-primary mb-0 fw-bold">{{ total_empresas|default:0 }}</h3>
                                 <p class="text-muted mb-0">Total Empresas</p>
                             </div>
                             <div class="text-primary opacity-50">
@@ -162,80 +192,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="stats-card green">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h3 class="text-success mb-0 fw-bold">128</h3>
-                                <p class="text-muted mb-0">Empresas Activas</p>
-                            </div>
-                            <div class="text-success opacity-50">
-                                <i class="fas fa-check-circle fa-2x"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="stats-card orange">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h3 class="text-warning mb-0 fw-bold">45</h3>
-                                <p class="text-muted mb-0">En Proceso</p>
-                            </div>
-                            <div class="text-warning opacity-50">
-                                <i class="fas fa-clock fa-2x"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="stats-card info">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h3 class="text-info mb-0 fw-bold">32</h3>
-                                <p class="text-muted mb-0">Convenios Activos</p>
-                            </div>
-                            <div class="text-info opacity-50">
-                                <i class="fas fa-handshake fa-2x"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Search Section -->
-        <div class="search-container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-text bg-light border-0">
-                            <i class="fas fa-search text-muted"></i>
-                        </span>
-                        <input type="text" class="form-control border-0 bg-light" 
-                                placeholder="Buscar empresas por nombre, NIT, ciudad..." id="searchInput">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <select class="form-select form-select-lg border-0 bg-light">
-                        <option value="">Todas las ciudades</option>
-                        <option value="bogota">Bogotá</option>
-                        <option value="medellin">Medellín</option>
-                        <option value="cali">Cali</option>
-                        <option value="barranquilla">Barranquilla</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Companies Grid -->
+        {% if lista_empresas %}
         <div class="row">
-            <!-- Company Card 1 -->
+            {% for empresa in lista_empresas %}
             <div class="col-lg-6 mb-4">
                 <div class="company-card">
                     <div class="card-body p-4">
@@ -245,22 +204,22 @@
                             </div>
                             <div class="flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="mb-0 fw-bold">TechCorp Solutions S.A.S</h5>
+                                    <h5 class="mb-0 fw-bold">{{ empresa.nombre }}</h5>
                                     <span class="status-badge bg-success text-white">Activa</span>
                                 </div>
                                 <p class="text-muted mb-2">
-                                    <i class="fas fa-id-card me-1"></i>NIT: 900.123.456-7
+                                    <i class="fas fa-id-card me-1"></i>{{ empresa.nit }}
                                 </p>
                                 <p class="text-muted mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Bogotá D.C. - Zona Rosa
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{ empresa.ciudad }} - {{ empresa.zona }}
                                 </p>
                                 <p class="text-muted mb-3">
-                                    <i class="fas fa-envelope me-1"></i>contacto@techcorp.com
+                                    <i class="fas fa-envelope me-1"></i>{{ empresa.email }}
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex gap-2">
-                                        <span class="badge bg-primary">15 Aprendices</span>
-                                        <span class="badge bg-info">3 Programas</span>
+                                        <span class="badge bg-primary">{{ empresa.total_aprendices }} Aprendices</span>
+                                        <span class="badge bg-info">{{ empresa.total_programas }} Programas</span>
                                     </div>
                                     <div class="btn-group btn-group-sm">
                                         <button class="btn btn-outline-primary">
@@ -279,184 +238,19 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Company Card 2 -->
-            <div class="col-lg-6 mb-4">
-                <div class="company-card">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start">
-                            <div class="company-avatar me-3">
-                                <i class="fas fa-industry"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="mb-0 fw-bold">Manufactura Industrial Ltda</h5>
-                                    <span class="status-badge bg-success text-white">Activa</span>
-                                </div>
-                                <p class="text-muted mb-2">
-                                    <i class="fas fa-id-card me-1"></i>NIT: 800.654.321-9
-                                </p>
-                                <p class="text-muted mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Medellín - Zona Industrial
-                                </p>
-                                <p class="text-muted mb-3">
-                                    <i class="fas fa-envelope me-1"></i>info@manufactura.com
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex gap-2">
-                                        <span class="badge bg-primary">8 Aprendices</span>
-                                        <span class="badge bg-info">2 Programas</span>
-                                    </div>
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-outline-primary">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline-secondary">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-outline-success">
-                                            <i class="fas fa-users"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Company Card 3 -->
-            <div class="col-lg-6 mb-4">
-                <div class="company-card">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start">
-                            <div class="company-avatar me-3">
-                                <i class="fas fa-store"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="mb-0 fw-bold">Retail & Commerce S.A</h5>
-                                    <span class="status-badge bg-warning text-dark">En Proceso</span>
-                                </div>
-                                <p class="text-muted mb-2">
-                                    <i class="fas fa-id-card me-1"></i>NIT: 700.987.654-3
-                                </p>
-                                <p class="text-muted mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Cali - Centro Comercial
-                                </p>
-                                <p class="text-muted mb-3">
-                                    <i class="fas fa-envelope me-1"></i>gerencia@retailcommerce.com
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex gap-2">
-                                        <span class="badge bg-primary">12 Aprendices</span>
-                                        <span class="badge bg-info">4 Programas</span>
-                                    </div>
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-outline-primary">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline-secondary">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-outline-success">
-                                            <i class="fas fa-users"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Company Card 4 -->
-            <div class="col-lg-6 mb-4">
-                <div class="company-card">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start">
-                            <div class="company-avatar me-3">
-                                <i class="fas fa-laptop-code"></i>
-                            </div>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="mb-0 fw-bold">DevSoft Innovations</h5>
-                                    <span class="status-badge bg-success text-white">Activa</span>
-                                </div>
-                                <p class="text-muted mb-2">
-                                    <i class="fas fa-id-card me-1"></i>NIT: 900.456.789-1
-                                </p>
-                                <p class="text-muted mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Barranquilla - Zona Norte
-                                </p>
-                                <p class="text-muted mb-3">
-                                    <i class="fas fa-envelope me-1"></i>contact@devsoft.co
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex gap-2">
-                                        <span class="badge bg-primary">20 Aprendices</span>
-                                        <span class="badge bg-info">5 Programas</span>
-                                    </div>
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-outline-primary">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline-secondary">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-outline-success">
-                                            <i class="fas fa-users"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
-
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-4">
-            <nav aria-label="Paginación de empresas">
-                <ul class="pagination pagination-lg">
-                    <li class="page-item disabled">
-                        <span class="page-link">Anterior</span>
-                    </li>
-                    <li class="page-item active">
-                        <span class="page-link">1</span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
+        {% else %}
+        <div class="alert">
+            <p>No hay empresas registradas en el sistema.</p>
+            <br>
+            <a href="{% url 'etp_practica:crear_empresa' %}" class="add-button">
+                <i class="fas fa-building"></i> Agregar Primera Empresa
+            </a>
         </div>
+        {% endif %}
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const companies = document.querySelectorAll('.company-card');
-            
-            companies.forEach(company => {
-                const text = company.textContent.toLowerCase();
-                const parent = company.parentElement;
-                if (text.includes(searchTerm)) {
-                    parent.style.display = '';
-                } else {
-                    parent.style.display = 'none';
-                }
-            });
-        });
-    </script>
 </body>
 </html>
