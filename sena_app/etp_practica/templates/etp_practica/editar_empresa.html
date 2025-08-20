@@ -11,50 +11,125 @@
             --sena-blue: #2E5266;
             --sena-green: #28A745;
             --sena-orange: #fd7e14;
-            --sena-purple: #6f42c1;
+            --sena-light: #E8F4FD;
         }
         
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .header-section {
-            background: linear-gradient(135deg, var(--sena-orange) 0%, #e55a00 100%);
-            color: white;
             padding: 2rem 0;
-            margin-bottom: 2rem;
-            border-radius: 0 0 20px 20px;
         }
         
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-        
-        .edit-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .form-container {
             background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
-            margin-bottom: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
         }
         
-        .card-header-custom {
-            background: linear-gradient(135deg, var(--sena-orange), #e55a00);
+        .form-header {
+            background: linear-gradient(135deg, #0f2d4b 0%, #1e3a4a 100% );
             color: white;
-            padding: 1.5rem;
-            border: none;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            position: relative;
         }
         
-        .form-section {
-            padding: 2rem;
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="90" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .form-header .company-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-body {
+            padding: 3rem 2rem;
+        }
+        
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .step-indicator .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .step-indicator .step.active {
+            background: #1e3a4a;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .step-indicator .step.completed {
+            background: var(--sena-green);
+            color: white;
+        }
+        
+        .step-indicator .step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 2rem;
+            height: 2px;
+            background: #e9ecef;
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+        
+        .step-indicator .step:last-child::after {
+            display: none;
+        }
+        
+        .step-indicator .step.completed::after {
+            background: var(--sena-green);
         }
         
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
         }
         
         .form-label {
@@ -64,19 +139,12 @@
             text-transform: uppercase;
             font-size: 0.85rem;
             letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .form-label i {
-            margin-right: 0.5rem;
-            color: var(--sena-orange);
         }
         
         .form-control {
             border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
             font-size: 1rem;
             transition: all 0.3s ease;
             background: #f8f9fa;
@@ -98,15 +166,11 @@
             background: rgba(220, 53, 69, 0.05);
         }
         
-        .input-group-custom {
+        .input-group-icon {
             position: relative;
         }
         
-        .input-group-custom .form-control {
-            padding-left: 3rem;
-        }
-        
-        .input-group-custom i {
+        .input-group-icon i {
             position: absolute;
             left: 1rem;
             top: 50%;
@@ -115,21 +179,48 @@
             z-index: 3;
         }
         
-        .btn-custom {
+        .input-group-icon .form-control {
+            padding-left: 3rem;
+        }
+        
+        .btn-step {
             border: none;
-            border-radius: 10px;
-            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            padding: 1rem 2rem;
             font-weight: 600;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
         
-        .btn-save {
+        .btn-next {
+            background: linear-gradient(135deg, #343a40, #1e3a4a);
+            color: white;
+        }
+        
+        .btn-next:hover {
+            background: linear-gradient(135deg, #343a40, #1e3a4a)
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(253, 126, 20, 0.3);
+        }
+        
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-prev:hover {
+            background: #5a6268;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-submit {
             background: linear-gradient(135deg, var(--sena-green), #1e7e34);
             color: white;
         }
         
-        .btn-save:hover {
+        .btn-submit:hover {
             background: linear-gradient(135deg, #1e7e34, var(--sena-green));
             color: white;
             transform: translateY(-2px);
@@ -137,140 +228,110 @@
         }
         
         .btn-cancel {
-            background: #6c757d;
+            background: #dc3545;
             color: white;
         }
         
         .btn-cancel:hover {
-            background: #5a6268;
+            background: #c82333;
             color: white;
             transform: translateY(-2px);
         }
         
-        .btn-delete {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-        }
-        
-        .btn-delete:hover {
-            background: linear-gradient(135deg, #c82333, #dc3545);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
-        }
-        
-        .status-section {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        .preview-card {
+            background: #f8f9fa;
             border-radius: 15px;
             padding: 2rem;
-            margin-bottom: 2rem;
+            border: 2px solid #e9ecef;
         }
         
-        .status-badge {
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .activity-log {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 2rem;
-        }
-        
-        .log-item {
+        .preview-item {
             display: flex;
-            align-items: start;
-            padding: 1rem 0;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
             border-bottom: 1px solid #e9ecef;
         }
         
-        .log-item:last-child {
+        .preview-item:last-child {
             border-bottom: none;
         }
         
-        .log-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--sena-orange);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            flex-shrink: 0;
+        .preview-label {
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            font-size: 0.85rem;
         }
         
-        .company-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+        .preview-value {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .current-info {
+            background: rgba(253, 126, 20, 0.1);
+            border: 1px solid rgba(253, 126, 20, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
             margin-bottom: 2rem;
         }
         
-        .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            border-color: var(--sena-orange);
-            transform: translateY(-3px);
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--sena-orange);
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #6c757d;
-            font-weight: 600;
-        }
-        
-        .changes-indicator {
+        .floating-shapes {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--sena-orange);
-            color: white;
-            padding: 1rem;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3);
-            display: none;
-            align-items: center;
-            gap: 0.5rem;
-            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
         }
         
-        .changes-indicator.show {
-            display: flex;
-            animation: slideUp 0.3s ease-out;
+        .shape {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
         }
         
-        @keyframes slideUp {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+        
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.3; }
+            100% { transform: translateY(0px) rotate(360deg); opacity: 0.7; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .validation-feedback {
             display: block;
+            width: 100%;
             margin-top: 0.25rem;
             font-size: 0.875rem;
         }
@@ -282,435 +343,278 @@
         .invalid-feedback {
             color: #dc3545;
         }
+
+        .alert {
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <!-- Header -->
-        <div class="header-section">
-            <div class="container">
-                <nav aria-label="breadcrumb" class="mb-3">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="#" class="text-white-50 text-decoration-none">Empresas</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="#" class="text-white-50 text-decoration-none">TechCorp Solutions</a>
-                        </li>
-                        <li class="breadcrumb-item active text-white">Editar Empresa</li>
-                    </ol>
-                </nav>
-                
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1 class="mb-1">
-                            <i class="fas fa-edit me-2"></i>
-                            Editar Empresa
-                        </h1>
-                        <p class="mb-0 opacity-75">Actualizar información de TechCorp Solutions S.A.S</p>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-light btn-lg" onclick="showDeleteModal()">
-                            <i class="fas fa-trash me-2"></i>Eliminar
-                        </button>
-                        <button class="btn btn-warning btn-lg">
-                            <i class="fas fa-history me-2"></i>Historial
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-container">
-            <!-- Company Statistics -->
-            <div class="company-stats">
-                <div class="stat-card">
-                    <div class="stat-number">15</div>
-                    <div class="stat-label">Aprendices Activos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">8</div>
-                    <div class="stat-label">Bitácoras Pendientes</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Programas Asignados</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">2</div>
-                    <div class="stat-label">Años de Alianza</div>
-                </div>
-            </div>
-
-            <div class="row">
-                <!-- Left Column - Form -->
-                <div class="col-lg-8">
-                    <!-- Status Section -->
-                    <div class="status-section">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="fw-bold mb-2">
-                                    <i class="fas fa-info-circle me-2"></i>Estado de la Empresa
-                                </h5>
-                                <span class="status-badge bg-success text-white">Empresa Activa</span>
-                            </div>
-                            <div class="text-end">
-                                <small class="text-muted">
-                                    <strong>Última actualización:</strong><br>
-                                    15 de Marzo, 2024 - 10:30 AM
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Edit Form -->
-                    <div class="edit-card">
-                        <div class="card-header-custom">
-                            <h4 class="mb-0">
-                                <i class="fas fa-building me-2"></i>
-                                Información de la Empresa
-                            </h4>
-                        </div>
-                        <div class="form-section">
-                            <form id="editEmpresaForm" method="post">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-building"></i>Nombre de la Empresa
-                                            </label>
-                                            <div class="input-group-custom">
-                                                <i class="fas fa-building"></i>
-                                                <input type="text" class="form-control" id="nombre" name="nombre" 
-                                                       value="TechCorp Solutions S.A.S" required>
-                                            </div>
-                                            <div class="invalid-feedback">Por favor, ingrese el nombre de la empresa</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-id-card"></i>NIT
-                                            </label>
-                                            <div class="input-group-custom">
-                                                <i class="fas fa-id-card"></i>
-                                                <input type="text" class="form-control" id="nit" name="nit" 
-                                                       value="900.123.456-7" required>
-                                            </div>
-                                            <div class="invalid-feedback">Por favor, ingrese un NIT válido</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-location-dot"></i>Dirección
-                                    </label>
-                                    <div class="input-group-custom">
-                                        <i class="fas fa-location-dot"></i>
-                                        <input type="text" class="form-control" id="direccion" name="direccion" 
-                                               value="Carrera 15 #93-47, Zona Rosa" required>
-                                    </div>
-                                    <div class="invalid-feedback">Por favor, ingrese la dirección completa</div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-map-marker-alt"></i>Ciudad
-                                            </label>
-                                            <div class="input-group-custom">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                                <select class="form-control" id="ciudad" name="ciudad" required>
-                                                    <option value="Bogotá D.C." selected>Bogotá D.C.</option>
-                                                    <option value="Medellín">Medellín</option>
-                                                    <option value="Cali">Cali</option>
-                                                    <option value="Barranquilla">Barranquilla</option>
-                                                    <option value="Cartagena">Cartagena</option>
-                                                    <option value="Bucaramanga">Bucaramanga</option>
-                                                    <option value="Pereira">Pereira</option>
-                                                    <option value="Tunja">Tunja</option>
-                                                </select>
-                                            </div>
-                                            <div class="invalid-feedback">Por favor, seleccione una ciudad</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-phone"></i>Teléfono
-                                            </label>
-                                            <div class="input-group-custom">
-                                                <i class="fas fa-phone"></i>
-                                                <input type="tel" class="form-control" id="telefono" name="telefono" 
-                                                       value="+57 1 234-5678" required>
-                                            </div>
-                                            <div class="invalid-feedback">Por favor, ingrese un teléfono válido</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-envelope"></i>Correo Electrónico
-                                            </label>
-                                            <div class="input-group-custom">
-                                                <i class="fas fa-envelope"></i>
-                                                <input type="email" class="form-control" id="email" name="email" 
-                                                       value="contacto@techcorp.com" required>
-                                            </div>
-                                            <div class="invalid-feedback">Por favor, ingrese un email válido</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">
-                                                <i class="fas fa-globe"></i>Sitio Web
-                                            </label>
-                                            <div class="input-group-custom">
-                                                <i class="fas fa-globe"></i>
-                                                <input type="url" class="form-control" id="sitio_web" name="sitio_web" 
-                                                       value="https://www.techcorp.com">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-industry"></i>Sector Empresarial
-                                    </label>
-                                    <div class="input-group-custom">
-                                        <i class="fas fa-industry"></i>
-                                        <select class="form-control" id="sector" name="sector" required>
-                                            <option value="Tecnología" selected>Tecnología</option>
-                                            <option value="Manufactura">Manufactura</option>
-                                            <option value="Comercio">Comercio</option>
-                                            <option value="Servicios">Servicios</option>
-                                            <option value="Construcción">Construcción</option>
-                                            <option value="Salud">Salud</option>
-                                            <option value="Educación">Educación</option>
-                                            <option value="Financiero">Financiero</option>
-                                            <option value="Otro">Otro</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <i class="fas fa-sticky-note"></i>Notas Adicionales
-                                    </label>
-                                    <textarea class="form-control" id="notas" name="notas" rows="4" 
-                                              placeholder="Información adicional sobre la empresa...">Empresa líder en desarrollo de software y soluciones tecnológicas. Excelente ambiente de trabajo para aprendices SENA.</textarea>
-                                </div>
-
-                                <div class="d-flex gap-3 justify-content-end mt-4">
-                                    <button type="button" class="btn btn-custom btn-cancel" onclick="cancelEdit()">
-                                        <i class="fas fa-times me-2"></i>Cancelar
-                                    </button>
-                                    <button type="submit" class="btn btn-custom btn-save">
-                                        <i class="fas fa-save me-2"></i>Guardar Cambios
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Column - Activity Log -->
-                <div class="col-lg-4">
-                    <div class="activity-log">
-                        <h5 class="fw-bold mb-3">
-                            <i class="fas fa-history me-2"></i>Actividad Reciente
-                        </h5>
-                        
-                        <div class="log-item">
-                            <div class="log-icon">
-                                <i class="fas fa-user-plus"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold">Nuevo aprendiz asignado</div>
-                                <small class="text-muted">Juan Pablo Martínez - Desarrollo de Software</small>
-                                <div class="text-muted small">Hace 2 horas</div>
-                            </div>
-                        </div>
-
-                        <div class="log-item">
-                            <div class="log-icon">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold">Bitácora actualizada</div>
-                                <small class="text-muted">María Rodríguez - Semana 18</small>
-                                <div class="text-muted small">Ayer a las 3:45 PM</div>
-                            </div>
-                        </div>
-
-                        <div class="log-item">
-                            <div class="log-icon">
-                                <i class="fas fa-edit"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold">Información actualizada</div>
-                                <small class="text-muted">Cambio de teléfono de contacto</small>
-                                <div class="text-muted small">15 Mar 2024</div>
-                            </div>
-                        </div>
-
-                        <div class="log-item">
-                            <div class="log-icon">
-                                <i class="fas fa-handshake"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold">Convenio renovado</div>
-                                <small class="text-muted">Extensión por 2 años más</small>
-                                <div class="text-muted small">10 Mar 2024</div>
-                            </div>
-                        </div>
-
-                        <div class="log-item">
-                            <div class="log-icon">
-                                <i class="fas fa-certificate"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold">Aprendiz certificado</div>
-                                <small class="text-muted">Luis Torres - Diseño Gráfico</small>
-                                <div class="text-muted small">5 Mar 2024</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
 
-    <!-- Changes Indicator -->
-    <div class="changes-indicator" id="changesIndicator">
-        <i class="fas fa-exclamation-circle"></i>
-        <span>Cambios sin guardar</span>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-body text-center p-5">
-                    <div class="mb-4">
-                        <i class="fas fa-exclamation-triangle fa-4x text-warning"></i>
-                    </div>
-                    <h3 class="fw-bold mb-3">¿Eliminar Empresa?</h3>
-                    <p class="text-muted mb-4">
-                        Esta acción eliminará permanentemente la empresa <strong>TechCorp Solutions S.A.S</strong> 
-                        y todos sus datos asociados, incluyendo aprendices y bitácoras.
-                        <br><br>
-                        <strong>Esta acción no se puede deshacer.</strong>
-                    </p>
-                    <div class="d-flex gap-3 justify-content-center">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i>Cancelar
-                        </button>
-                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">
-                            <i class="fas fa-trash me-2"></i>Sí, Eliminar
-                        </button>
-                    </div>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <div class="company-icon">
+                    <i class="fas fa-edit"></i>
                 </div>
+                <h1 class="mb-2">Editar Empresa</h1>
+                <p class="mb-0 opacity-75">Modifique la información de la empresa {{ empresa.nombre }}</p>
             </div>
-        </div>
-    </div>
 
-    <!-- Success Modal -->
-    <div class="modal fade" id="successModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-body text-center p-5">
-                    <div class="mb-4">
-                        <i class="fas fa-check-circle fa-4x text-success"></i>
-                    </div>
-                    <h3 class="fw-bold mb-3">¡Cambios Guardados!</h3>
-                    <p class="text-muted mb-4">
-                        La información de la empresa ha sido actualizada correctamente.
-                    </p>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <i class="fas fa-check me-2"></i>Continuar
-                    </button>
+            <div class="form-body">
+                <!-- Mostrar mensajes de Django -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-triangle{% else %}info-circle{% endif %} me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="current-info">
+                    <h6 class="fw-bold mb-2">
+                        <i class="fas fa-info-circle me-2"></i>Información Actual
+                    </h6>
+                    <p class="mb-0 text-muted">Editando: <strong>{{ empresa.nombre }}</strong> - NIT: <strong>{{ empresa.nit }}</strong></p>
                 </div>
+
+                <div class="step-indicator">
+                    <div class="step active" data-step="1">1</div>
+                    <div class="step" data-step="2">2</div>
+                    <div class="step" data-step="3">3</div>
+                </div>
+
+                <form id="empresaForm" method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="form-step active" id="step1">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold">Información Básica</h3>
+                            <p class="text-muted">Actualice los datos generales de la empresa</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="id_nombre">Nombre de la Empresa</label>
+                                    <div class="input-group-icon">
+                                        <i class="fas fa-building"></i>
+                                        {{ form.nombre }}
+                                    </div>
+                                    {% if form.nombre.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.nombre.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="id_nit">NIT</label>
+                                    <div class="input-group-icon">
+                                        <i class="fas fa-id-card"></i>
+                                        {{ form.nit }}
+                                    </div>
+                                    {% if form.nit.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.nit.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="id_direccion">Dirección</label>
+                            <div class="input-group-icon">
+                                <i class="fas fa-location-dot"></i>
+                                {{ form.direccion }}
+                            </div>
+                            {% if form.direccion.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.direccion.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="id_ciudad">Ciudad</label>
+                            <div class="input-group-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                                {{ form.ciudad }}
+                            </div>
+                            {% if form.ciudad.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.ciudad.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="button" class="btn btn-step btn-next" onclick="nextStep()">
+                                Siguiente <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" id="step2">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold">Información de Contacto</h3>
+                            <p class="text-muted">Actualice los datos de comunicación</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="id_telefono">Teléfono</label>
+                                    <div class="input-group-icon">
+                                        <i class="fas fa-phone"></i>
+                                        {{ form.telefono }}
+                                    </div>
+                                    {% if form.telefono.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.telefono.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="id_email">Email</label>
+                                    <div class="input-group-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        {{ form.email }}
+                                    </div>
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-step btn-prev" onclick="prevStep()">
+                                <i class="fas fa-arrow-left me-2"></i> Anterior
+                            </button>
+                            <button type="button" class="btn btn-step btn-next" onclick="nextStep()">
+                                Siguiente <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" id="step3">
+                        <div class="text-center mb-4">
+                            <h3 class="fw-bold">Confirmación de Cambios</h3>
+                            <p class="text-muted">Revise las modificaciones antes de guardar</p>
+                        </div>
+
+                        <div class="preview-card">
+                            <h5 class="fw-bold mb-3">
+                                <i class="fas fa-eye me-2"></i>Resumen de Cambios
+                            </h5>
+                            
+                            <div class="preview-item">
+                                <span class="preview-label">Nombre de la Empresa:</span>
+                                <span class="preview-value" id="preview-nombre">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">NIT:</span>
+                                <span class="preview-value" id="preview-nit">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">Ciudad:</span>
+                                <span class="preview-value" id="preview-ciudad">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">Dirección:</span>
+                                <span class="preview-value" id="preview-direccion">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">Teléfono:</span>
+                                <span class="preview-value" id="preview-telefono">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">Email:</span>
+                                <span class="preview-value" id="preview-email">-</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="confirmar_cambios" required>
+                                <label class="form-check-label" for="confirmar_cambios">
+                                    He verificado que todos los cambios son correctos y deseo actualizar 
+                                    la información de la empresa.
+                                </label>
+                                <div class="invalid-feedback">Debe confirmar los cambios antes de continuar</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-step btn-prev" onclick="prevStep()">
+                                <i class="fas fa-arrow-left me-2"></i> Anterior
+                            </button>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'etp_practica:detalle_empresa' empresa.id %}" class="btn btn-step btn-cancel">
+                                    <i class="fas fa-times me-2"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-step btn-submit" id="submitBtn">
+                                    <i class="fas fa-save me-2"></i> Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        let originalFormData = {};
-        let hasUnsavedChanges = false;
+        let currentStep = 1;
+        const totalSteps = 3;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Store original form data
-            const form = document.getElementById('editEmpresaForm');
-            const formData = new FormData(form);
-            for (let [key, value] of formData.entries()) {
-                originalFormData[key] = value;
-            }
-
-            // Track form changes
-            const inputs = form.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('input', handleFormChange);
-                input.addEventListener('change', handleFormChange);
-            });
-
-            // Real-time validation
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    if (this.hasAttribute('required')) {
-                        if (!this.value.trim()) {
-                            this.classList.add('is-invalid');
-                            this.classList.remove('is-valid');
-                        } else {
-                            this.classList.remove('is-invalid');
-                            this.classList.add('is-valid');
-                        }
+        function nextStep() {
+            if (validateStep(currentStep)) {
+                if (currentStep < totalSteps) {
+                    document.getElementById(`step${currentStep}`).classList.remove('active');
+                    document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('completed');
+                    
+                    currentStep++;
+                    document.getElementById(`step${currentStep}`).classList.add('active');
+                    document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                    
+                    if (currentStep === 3) {
+                        updatePreview();
                     }
-                });
-            });
-
-            // Form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                if (validateForm()) {
-                    saveChanges();
                 }
-            });
-
-            // Warn before leaving with unsaved changes
-            window.addEventListener('beforeunload', function(e) {
-                if (hasUnsavedChanges) {
-                    e.preventDefault();
-                    e.returnValue = '';
-                }
-            });
-
-            // NIT formatting
-            document.getElementById('nit').addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length >= 9) {
-                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
-                }
-                e.target.value = value;
-            });
-        });
-
-        function handleFormChange() {
-            hasUnsavedChanges = true;
-            document.getElementById('changesIndicator').classList.add('show');
+            }
         }
 
-        function validateForm() {
-            const form = document.getElementById('editEmpresaForm');
-            const inputs = form.querySelectorAll('input[required], select[required]');
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                document.querySelector(`.step[data-step="${currentStep + 1}"]`).classList.remove('completed');
+            }
+        }
+
+        function validateStep(step) {
+            const stepElement = document.getElementById(`step${step}`);
+            const inputs = stepElement.querySelectorAll('input[required], select[required]');
             let isValid = true;
 
             inputs.forEach(input => {
@@ -726,54 +630,86 @@
             return isValid;
         }
 
-        function saveChanges() {
-            // Simulate saving
-            setTimeout(() => {
-                hasUnsavedChanges = false;
-                document.getElementById('changesIndicator').classList.remove('show');
-                
-                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                successModal.show();
-            }, 1000);
+        function updatePreview() {
+            document.getElementById('preview-nombre').textContent = document.getElementById('id_nombre').value || '-';
+            document.getElementById('preview-nit').textContent = document.getElementById('id_nit').value || '-';
+            document.getElementById('preview-ciudad').textContent = document.getElementById('id_ciudad').value || '-';
+            document.getElementById('preview-direccion').textContent = document.getElementById('id_direccion').value || '-';
+            document.getElementById('preview-telefono').textContent = document.getElementById('id_telefono').value || '-';
+            document.getElementById('preview-email').textContent = document.getElementById('id_email').value || '-';
         }
 
-        function cancelEdit() {
-            if (hasUnsavedChanges) {
-                if (confirm('¿Está seguro de que desea cancelar? Se perderán todos los cambios no guardados.')) {
-                    // Restore original values
-                    for (let [key, value] of Object.entries(originalFormData)) {
-                        const input = document.querySelector(`[name="${key}"]`);
-                        if (input) {
-                            input.value = value;
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, select');
+            
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.hasAttribute('required')) {
+                        if (!this.value.trim()) {
+                            this.classList.add('is-invalid');
+                            this.classList.remove('is-valid');
+                        } else {
+                            this.classList.remove('is-invalid');
+                            this.classList.add('is-valid');
                         }
                     }
-                    hasUnsavedChanges = false;
-                    document.getElementById('changesIndicator').classList.remove('show');
-                    window.history.back();
+                });
+
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid') && this.value.trim()) {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                });
+            });
+
+            document.getElementById('confirmar_cambios').addEventListener('change', function() {
+                if (this.checked) {
+                    this.classList.remove('is-invalid');
+                } else {
+                    this.classList.add('is-invalid');
                 }
-            } else {
-                window.history.back();
-            }
-        }
+            });
 
-        function showDeleteModal() {
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            deleteModal.show();
-        }
+            // Manejar envío del formulario
+            document.getElementById('empresaForm').addEventListener('submit', function(e) {
+                // Validar confirmación de cambios
+                const confirmar = document.getElementById('confirmar_cambios');
+                if (!confirmar.checked) {
+                    e.preventDefault();
+                    confirmar.classList.add('is-invalid');
+                    return false;
+                }
 
-        function confirmDelete() {
-            // Simulate deletion
-            setTimeout(() => {
-                bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
-                alert('Empresa eliminada correctamente');
-                window.location.href = '/empresas/';
-            }, 1000);
-        }
+                // Validar todos los pasos
+                let allValid = true;
+                for (let i = 1; i <= 2; i++) {
+                    if (!validateStep(i)) {
+                        allValid = false;
+                        // Volver al primer paso con errores
+                        if (currentStep !== i) {
+                            document.getElementById(`step${currentStep}`).classList.remove('active');
+                            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                            currentStep = i;
+                            document.getElementById(`step${currentStep}`).classList.add('active');
+                            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                        }
+                        break;
+                    }
+                }
+
+                if (!allValid) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Mostrar indicador de carga
+                const submitBtn = document.getElementById('submitBtn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Guardando cambios...';
+                submitBtn.disabled = true;
+            });
+        });
     </script>
 </body>
-</html>50 text-decoration-none">
-                                <i class="fas fa-home me-1"></i>Inicio
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="#" class="text-white-
+</html>

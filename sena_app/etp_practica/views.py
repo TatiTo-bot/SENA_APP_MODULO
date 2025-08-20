@@ -2,10 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.db import IntegrityError
-from .models import Empresa, EtapaPractica
+from .models import Empresa, EtapaPractica, Aprendiz
 from .forms import EmpresaForm, EtapaPracticaForm
 from django.urls import reverse
-
 @csrf_protect
 def crear_empresa(request):
     if request.method == 'POST':
@@ -24,7 +23,6 @@ def crear_empresa(request):
             except Exception as e:
                 messages.error(request, f'Error inesperado al registrar la empresa: {str(e)}')
         else:
-            # Mostrar errores específicos del formulario
             messages.error(request, 'Por favor, corrija los errores en el formulario.')
             for field, errors in form.errors.items():
                 for error in errors:
@@ -62,30 +60,48 @@ def detalle_empresa(request, empresa_id):
     })
 
 def aprendices_asignados(request, empresa_id):
-    empresa = get_object_or_404(Empresa, id=empresa_id)
-    etapas = EtapaPractica.objects.filter(empresa=empresa).select_related('aprendiz')
+    empresa = get_object_or_404(Empresa, pk=empresa_id)
+    etapas_practica = EtapaPractica.objects.filter(empresa=empresa)
+    lista_aprendices_con_info = []
+    for etapa in etapas_practica:
+        lista_aprendices_con_info.append({
+            'aprendiz': etapa.aprendiz,
+            'estado': etapa.estado,
+            'tutor': etapa.tutor,
+        })
+
+    lista_aprendices = Aprendiz.objects.filter(etapapractica__empresa=empresa)
+
+    aprendices_productivos = etapas_practica.filter(estado='PRODUCTIVA').count()
+    aprendices_finalizados = etapas_practica.filter(estado='FINALIZADO').count()
+    aprendices_lectivos = etapas_practica.filter(estado='LECTIVA').count()
     
-    # Estadísticas
-    total_aprendices = etapas.count()
-    con_alertas = etapas.filter(estado__in=['APLAZADO', 'RETIRADO']).count()
-    finalizados = etapas.filter(estado='FINALIZADO').count()
-    activos = etapas.filter(estado='PRODUCTIVA').count()
+    total_aprendices = etapas_practica.count()
     
     context = {
         'empresa': empresa,
-        'etapas': etapas.order_by('-fecha_inicio'),
+        'lista_aprendices': lista_aprendices_con_info, 
         'total_aprendices': total_aprendices,
-        'con_alertas': con_alertas,
-        'finalizados': finalizados,
-        'activos': activos,
+        'aprendices_productivos': aprendices_productivos,
+        'aprendices_finalizados': aprendices_finalizados,
+        'aprendices_lectivos': aprendices_lectivos,
     }
     return render(request, 'etp_practica/aprendices_asignados.html', context)
+
+def asignar_aprendiz(request, empresa_id):
+    empresa = get_object_or_404(Empresa, pk=empresa_id)
+    
+    if request.method == 'POST':
+        return redirect('etp_practica:aprendices_asignados', empresa_id=empresa.id)
+    context = {
+        'empresa': empresa
+    }
+    return render(request, 'etp_practica/asignar_aprendiz.html', context)
 
 def bitacoras(request, empresa_id):
     empresa = get_object_or_404(Empresa, id=empresa_id)
     etapas = EtapaPractica.objects.filter(empresa=empresa).select_related('aprendiz')
     
-    # Estadísticas de bitácoras
     sin_iniciar = etapas.filter(estado='LECTIVA').count()
     desertaron = etapas.filter(estado='RETIRADO').count()
     enviadas = etapas.filter(estado='PRODUCTIVA').count()
@@ -149,34 +165,11 @@ def editar_empresa(request, empresa_id):
         'empresa': empresa
     })
 
-@csrf_protect
-def crear_etapa_practica(request):
-    if request.method == 'POST':
-        form = EtapaPracticaForm(request.POST)
-        if form.is_valid():
-            try:
-                etapa = form.save()
-                messages.success(request, f'Etapa de práctica para {etapa.aprendiz.nombre} creada exitosamente.')
-                return redirect('etp_practica:detalle_empresa', empresa_id=etapa.empresa.id)
-            except Exception as e:
-                messages.error(request, f'Error al crear la etapa de práctica: {str(e)}')
-        else:
-            messages.error(request, 'Por favor, corrija los errores en el formulario.')
-            for field, errors in form.errors.items():
-                for error in errors:
-                    field_name = form.fields[field].label if field in form.fields else field
-                    messages.error(request, f'{field_name}: {error}')
-    else:
-        form = EtapaPracticaForm()
-        
-    return render(request, 'etp_practica/crear_etapa_practica.html', {'form': form})
-
 def eliminar_empresa(request, empresa_id):
     empresa = get_object_or_404(Empresa, id=empresa_id)
     
     if request.method == 'POST':
         try:
-            # Verificar si tiene etapas de práctica asociadas
             etapas_count = EtapaPractica.objects.filter(empresa=empresa).count()
             if etapas_count > 0:
                 messages.error(request, f'No se puede eliminar la empresa "{empresa.nombre}" porque tiene {etapas_count} etapa(s) de práctica asociada(s).')
@@ -191,7 +184,6 @@ def eliminar_empresa(request, empresa_id):
             messages.error(request, f'Error al eliminar la empresa: {str(e)}')
             return redirect('etp_practica:detalle_empresa', empresa_id=empresa.id)
     
-    # Si es GET, mostrar confirmación
     etapas_count = EtapaPractica.objects.filter(empresa=empresa).count()
     return render(request, 'etp_practica/confirmar_eliminacion.html', {
         'empresa': empresa,
