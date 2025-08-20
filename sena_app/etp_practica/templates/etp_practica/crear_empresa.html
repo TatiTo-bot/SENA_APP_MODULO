@@ -324,6 +324,12 @@
         .invalid-feedback {
             color: #dc3545;
         }
+
+        /* Alertas de Django */
+        .alert {
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
@@ -344,13 +350,24 @@
             </div>
 
             <div class="form-body">
+                <!-- Mostrar mensajes de Django -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-triangle{% else %}info-circle{% endif %} me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
                 <div class="step-indicator">
                     <div class="step active" data-step="1">1</div>
                     <div class="step" data-step="2">2</div>
                     <div class="step" data-step="3">3</div>
                 </div>
 
-                <form id="empresaForm" method="post">
+                <form id="empresaForm" method="post" novalidate>
                     {% csrf_token %}
                     
                     <div class="form-step active" id="step1">
@@ -362,57 +379,58 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Nombre de la Empresa</label>
+                                    <label class="form-label" for="id_nombre">Nombre de la Empresa</label>
                                     <div class="input-group-icon">
                                         <i class="fas fa-building"></i>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" 
-                                                placeholder="Ej: TechCorp Solutions S.A.S" required>
+                                        {{ form.nombre }}
                                     </div>
-                                    <div class="invalid-feedback">Por favor, ingrese el nombre de la empresa</div>
+                                    {% if form.nombre.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.nombre.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">NIT</label>
+                                    <label class="form-label" for="id_nit">NIT</label>
                                     <div class="input-group-icon">
                                         <i class="fas fa-id-card"></i>
-                                        <input type="text" class="form-control" id="nit" name="nit" 
-                                                placeholder="Ej: 900.123.456-7" required>
+                                        {{ form.nit }}
                                     </div>
-                                    <div class="invalid-feedback">Por favor, ingrese un NIT válido</div>
+                                    {% if form.nit.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.nit.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Dirección</label>
+                            <label class="form-label" for="id_direccion">Dirección</label>
                             <div class="input-group-icon">
                                 <i class="fas fa-location-dot"></i>
-                                <input type="text" class="form-control" id="direccion" name="direccion" 
-                                        placeholder="Ej: Carrera 15 #93-47, Zona Rosa" required>
+                                {{ form.direccion }}
                             </div>
-                            <div class="invalid-feedback">Por favor, ingrese la dirección completa</div>
+                            {% if form.direccion.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.direccion.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Ciudad</label>
+                            <label class="form-label" for="id_ciudad">Ciudad</label>
                             <div class="input-group-icon">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <select class="form-control" id="ciudad" name="ciudad" required>
-                                    <option value="">Seleccione una ciudad</option>
-                                    <option value="Bogotá D.C.">Bogotá D.C.</option>
-                                    <option value="Medellín">Medellín</option>
-                                    <option value="Cali">Cali</option>
-                                    <option value="Barranquilla">Barranquilla</option>
-                                    <option value="Cartagena">Cartagena</option>
-                                    <option value="Bucaramanga">Bucaramanga</option>
-                                    <option value="Pereira">Pereira</option>
-                                    <option value="Manizales">Manizales</option>
-                                    <option value="Tunja">Tunja</option>
-                                    <option value="Otra">Otra</option>
-                                </select>
+                                {{ form.ciudad }}
                             </div>
-                            <div class="invalid-feedback">Por favor, seleccione una ciudad</div>
+                            {% if form.ciudad.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.ciudad.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="d-flex justify-content-end mt-4">
@@ -421,7 +439,6 @@
                             </button>
                         </div>
                     </div>
-
 
                     <div class="form-step" id="step2">
                         <div class="text-center mb-4">
@@ -432,64 +449,32 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Teléfono Principal</label>
+                                    <label class="form-label" for="id_telefono">Teléfono</label>
                                     <div class="input-group-icon">
                                         <i class="fas fa-phone"></i>
-                                        <input type="tel" class="form-control" id="telefono" name="telefono" 
-                                                placeholder="Ej: +57 1 234-5678" required>
+                                        {{ form.telefono }}
                                     </div>
-                                    <div class="invalid-feedback">Por favor, ingrese un teléfono válido</div>
+                                    {% if form.telefono.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.telefono.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Teléfono Secundario</label>
+                                    <label class="form-label" for="id_email">Email</label>
                                     <div class="input-group-icon">
-                                        <i class="fas fa-mobile-alt"></i>
-                                        <input type="tel" class="form-control" id="telefono_secundario" name="telefono_secundario" 
-                                                placeholder="Opcional">
+                                        <i class="fas fa-envelope"></i>
+                                        {{ form.email }}
                                     </div>
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Correo Electrónico</label>
-                            <div class="input-group-icon">
-                                <i class="fas fa-envelope"></i>
-                                <input type="email" class="form-control" id="email" name="email" 
-                                        placeholder="Ej: contacto@empresa.com" required>
-                            </div>
-                            <div class="invalid-feedback">Por favor, ingrese un email válido</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Sitio Web</label>
-                            <div class="input-group-icon">
-                                <i class="fas fa-globe"></i>
-                                <input type="url" class="form-control" id="sitio_web" name="sitio_web" 
-                                        placeholder="Ej: https://www.empresa.com">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Sector Empresarial</label>
-                            <div class="input-group-icon">
-                                <i class="fas fa-industry"></i>
-                                <select class="form-control" id="sector" name="sector" required>
-                                    <option value="">Seleccione un sector</option>
-                                    <option value="Tecnología">Tecnología</option>
-                                    <option value="Manufactura">Manufactura</option>
-                                    <option value="Comercio">Comercio</option>
-                                    <option value="Servicios">Servicios</option>
-                                    <option value="Construcción">Construcción</option>
-                                    <option value="Salud">Salud</option>
-                                    <option value="Educación">Educación</option>
-                                    <option value="Financiero">Financiero</option>
-                                    <option value="Otro">Otro</option>
-                                </select>
-                            </div>
-                            <div class="invalid-feedback">Por favor, seleccione un sector</div>
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
@@ -537,10 +522,6 @@
                                 <span class="preview-label">Email:</span>
                                 <span class="preview-value" id="preview-email">-</span>
                             </div>
-                            <div class="preview-item">
-                                <span class="preview-label">Sector:</span>
-                                <span class="preview-value" id="preview-sector">-</span>
-                            </div>
                         </div>
 
                         <div class="form-group mt-4">
@@ -558,38 +539,12 @@
                             <button type="button" class="btn btn-step btn-prev" onclick="prevStep()">
                                 <i class="fas fa-arrow-left me-2"></i> Anterior
                             </button>
-                            <button type="submit" class="btn btn-step btn-submit">
-                                <i class="fas fa-save me-2" ></i> Registrar Empresa
+                            <button type="submit" class="btn btn-step btn-submit" id="submitBtn">
+                                <i class="fas fa-save me-2"></i> Registrar Empresa
                             </button>
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="successModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-body text-center p-5">
-                    <div class="mb-4">
-                        <i class="fas fa-check-circle fa-4x text-success"></i>
-                    </div>
-                    <h3 class="fw-bold mb-3">¡Empresa Registrada Exitosamente!</h3>
-                    <p class="text-muted mb-4">
-                        La empresa ha sido registrada correctamente en el sistema. 
-                        Ahora puede proceder a asignar aprendices y gestionar las etapas productivas.
-                    </p>
-                    <div class="d-flex gap-2 justify-content-center">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Registrar Otra
-                        </button>
-                        <a href="{% url 'etp_practica:lista_empresas' %}" class="btn btn-primary">
-                            Ver Lista de Empresas
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -646,13 +601,12 @@
         }
 
         function updatePreview() {
-            document.getElementById('preview-nombre').textContent = document.getElementById('nombre').value;
-            document.getElementById('preview-nit').textContent = document.getElementById('nit').value;
-            document.getElementById('preview-ciudad').textContent = document.getElementById('ciudad').value;
-            document.getElementById('preview-direccion').textContent = document.getElementById('direccion').value;
-            document.getElementById('preview-telefono').textContent = document.getElementById('telefono').value;
-            document.getElementById('preview-email').textContent = document.getElementById('email').value;
-            document.getElementById('preview-sector').textContent = document.getElementById('sector').value;
+            document.getElementById('preview-nombre').textContent = document.getElementById('id_nombre').value || '-';
+            document.getElementById('preview-nit').textContent = document.getElementById('id_nit').value || '-';
+            document.getElementById('preview-ciudad').textContent = document.getElementById('id_ciudad').value || '-';
+            document.getElementById('preview-direccion').textContent = document.getElementById('id_direccion').value || '-';
+            document.getElementById('preview-telefono').textContent = document.getElementById('id_telefono').value || '-';
+            document.getElementById('preview-email').textContent = document.getElementById('id_email').value || '-';
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -679,58 +633,53 @@
                 });
             });
 
-
-            document.getElementById('nit').addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length >= 9) {
-                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
-                }
-                e.target.value = value;
-            });
-
-            const phoneInputs = document.querySelectorAll('input[type="tel"]');
-            phoneInputs.forEach(input => {
-                input.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.startsWith('57')) {
-                        value = value.replace(/(\d{2})(\d{1})(\d{3})(\d{4})/, '+$1 $2 $3-$4');
-                    }
-                    e.target.value = value;
-                });
-            });
-
             document.getElementById('terminos').addEventListener('change', function() {
                 if (this.checked) {
                     this.classList.remove('is-invalid');
+                } else {
+                    this.classList.add('is-invalid');
                 }
             });
 
+            // Manejar envío del formulario
             document.getElementById('empresaForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                if (!document.getElementById('terminos').checked) {
-                    document.getElementById('terminos').classList.add('is-invalid');
-                    return;
+                // Validar términos y condiciones
+                const terminos = document.getElementById('terminos');
+                if (!terminos.checked) {
+                    e.preventDefault();
+                    terminos.classList.add('is-invalid');
+                    return false;
                 }
 
-                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                successModal.show();
+                // Validar todos los pasos
+                let allValid = true;
+                for (let i = 1; i <= 2; i++) {
+                    if (!validateStep(i)) {
+                        allValid = false;
+                        // Volver al primer paso con errores
+                        if (currentStep !== i) {
+                            document.getElementById(`step${currentStep}`).classList.remove('active');
+                            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                            currentStep = i;
+                            document.getElementById(`step${currentStep}`).classList.add('active');
+                            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                        }
+                        break;
+                    }
+                }
+
+                if (!allValid) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                // Mostrar indicador de carga
+                const submitBtn = document.getElementById('submitBtn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Guardando...';
+                submitBtn.disabled = true;
             });
         });
-        const form = document.querySelector('form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                const submitBtn = document.querySelector('.btn-primary');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
-                submitBtn.disabled = true;
-                
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }, 2000);
-            });
-        }
     </script>
 </body>
 </html>
