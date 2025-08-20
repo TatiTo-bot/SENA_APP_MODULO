@@ -279,9 +279,6 @@
                             <div class="flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h5 class="mb-0 fw-bold">{{ empresa.nombre }}</h5>
-                                    <span class="status-badge bg-success text-white">
-                                        {% if empresa.activo %}Activa{% else %}Inactiva{% endif %}
-                                    </span>
                                 </div>
                                 <p class="text-muted mb-2">
                                     <i class="fas fa-id-card me-1"></i>{{ empresa.nit }}
@@ -294,8 +291,8 @@
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex gap-2">
-                                        <span class="badge bg-primary">{{ empresa.total_aprendices|default:0 }} Aprendices</span>
-                                        <span class="badge bg-info">{{ empresa.aprendices_activos|default:0 }} Activos</span>
+                                        <span class="badge bg-primary">{{ total_aprendices|default:0 }} Aprendices</span>
+                                        <span class="badge bg-info">{{ total_activos|default:0 }} Activos</span>
                                     </div>
                                     <div class="btn-group btn-group-sm">
                                         <a href="{% url 'etp_practica:detalle_empresa' empresa.id %}" 
