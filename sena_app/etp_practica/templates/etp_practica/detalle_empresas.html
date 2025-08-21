@@ -281,17 +281,6 @@
                 </div>
                 <h1 class="mb-2">{{ empresa.nombre }}</h1>
                 <p class="mb-0 opacity-75">Información detallada de la empresa</p>
-                <div class="mt-3">
-                    {% if empresa.activo %}
-                        <span class="status-badge status-active">
-                            <i class="fas fa-check-circle me-1"></i>Empresa Activa
-                        </span>
-                    {% else %}
-                        <span class="status-badge status-inactive">
-                            <i class="fas fa-times-circle me-1"></i>Empresa Inactiva
-                        </span>
-                    {% endif %}
-                </div>
             </div>
 
             <div class="detail-body">
@@ -388,15 +377,11 @@
                             </h5>
                             
                             <div class="text-center mb-3">
-                                <div class="display-6 fw-bold text-primary">{{ empresa.total_aprendices|default:0 }}</div>
-                                <div class="text-muted"a href="{% url 'etp_practica:aprendices_asignados' empresa.id %}">Total Aprendices</div>
+                                <div class="display-6 fw-bold text-primary">{{ empresa.total_asignaciones|default:0 }}</div>
+                                <div class="text-muted">Total Asignaciones</div>
                             </div>
                             
-                            <div class="text-center mb-3">
-                                <div class="display-6 fw-bold text-success">{{ empresa.aprendices_activos|default:0 }}</div>
-                                <div class="text-muted">Aprendices Activos</div>
-                            </div>
-                            
+
                             <div class="text-center">
                                 <div class="display-6 fw-bold text-info">{{ empresa.fecha_registro|date:"d/m/Y" }}</div>
                                 <div class="text-muted">Fecha de Registro</div>

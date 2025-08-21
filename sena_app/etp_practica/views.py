@@ -9,7 +9,6 @@ from .models import Empresa, EtapaPractica, AsignacionAprendiz
 from aprendices.models import Aprendiz
 from .forms import (
     EmpresaForm, 
-    EtapaPracticaForm, 
     AsignacionAprendizForm, 
     FiltroAsignacionesForm,
     ConfirmarAsignacionForm

@@ -19,10 +19,6 @@ class Empresa(models.Model):
         verbose_name_plural = "Empresas"
 
 class AsignacionAprendiz(models.Model):
-    """
-    Modelo para gestionar la asignación de aprendices a empresas
-    antes de iniciar su etapa práctica
-    """
     ESTADO_CHOICES = [
         ('PENDIENTE', 'Pendiente de asignación'),
         ('ASIGNADO', 'Asignado a empresa'),

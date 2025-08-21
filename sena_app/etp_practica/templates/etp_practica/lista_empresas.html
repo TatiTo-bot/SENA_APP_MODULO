@@ -291,8 +291,7 @@
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex gap-2">
-                                        <span class="badge bg-primary">{{ asignaciones_totales|default:0 }} Aprendices</span>
-                                        <span class="badge bg-info">{{ total_activos|default:0 }} Activos</span>
+                                        <span class="badge bg-primary">{{ empresa.total_asignaciones|default:0 }} Aprendices</span>
                                     </div>
                                     <div class="btn-group btn-group-sm">
                                         <a href="{% url 'etp_practica:detalle_empresa' empresa.id %}" 

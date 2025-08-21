@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora de Seguimiento - SENA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --sena-blue: #2E5266;
+            --sena-green: #28A745;
+            --sena-orange: #FF8C00;
+            --sena-light: #E8F4FD;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .main-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--sena-blue) 0%, #1a3a4a 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .sena-logo {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            font-size: 2rem;
+            color: var(--sena-blue);
+            font-weight: bold;
+        }
+        
+        .form-container {
+            padding: 3rem;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .step {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #e9ecef;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 1rem;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .step.active {
+            background: var(--sena-green);
+            color: white;
+        }
+        
+        .step.completed {
+            background: var(--sena-blue);
+            color: white;
+        }
+        
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 2rem;
+            height: 3px;
+            background: #e9ecef;
+            transform: translateY(-50%);
+        }
+        
+        .step:last-child::after {
+            display: none;
+        }
+        
+        .step.completed::after {
+            background: var(--sena-blue);
+        }
+        
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--sena-green);
+        }
+        
+        .section-title {
+            color: var(--sena-blue);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--sena-green);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.7rem;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .activity-row {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .activity-row:hover {
+            border-color: var(--sena-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--sena-green) 0%, #1e7e34 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        .btn-secondary-custom {
+            background: #6c757d;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .progress-container {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+        
+        .progress-bar-custom {
+            background: linear-gradient(90deg, var(--sena-green), var(--sena-blue));
+            height: 100%;
+            width: 25%;
+            transition: width 0.3s ease;
+        }
+        
+        .signature-box {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .signature-box:hover {
+            border-color: var(--sena-green);
+            background: rgba(40, 167, 69, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header-section">
+            <div class="sena-logo">
+                SENA
+            </div>
+            <h1 class="h2 mb-1">Bitácora de Seguimiento</h1>
+            <p class="mb-0 opacity-75">Etapa Práctica - Registro de Actividades</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="step-indicator">
+                <div class="step active">1</div>
+                <div class="step">2</div>
+                <div class="step">3</div>
+                <div class="step">4</div>
+                <div class="step">5</div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar-custom"></div>
+            </div>
+            
+            <form id="bitacoraForm" method="POST">
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user-circle"></i>
+                        Información General
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombre_aprendiz" class="form-label">Nombre del Aprendiz <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="nombre_aprendiz" name="nombre_aprendiz" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="documento" class="form-label">Número de Documento <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="documento" name="documento" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="programa_formacion" class="form-label">Programa de Formación <span class="required">*</span></label>
+                            <select class="form-select" id="programa_formacion" name="programa_formacion" required>
+                                <option value="">Seleccione un programa</option>
+                                <option value="desarrollo_software">Tecnología en Desarrollo de Software</option>
+                                <option value="marketing_digital">Tecnología en Marketing Digital</option>
+                                <option value="diseno_grafico">Tecnología en Diseño Gráfico</option>
+                                <option value="analisis_sistemas">Tecnología en Análisis de Sistemas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="ficha" class="form-label">Número de Ficha <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="ficha" name="ficha" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="empresa" class="form-label">Empresa <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="empresa" name="empresa" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="jefe_inmediato" class="form-label">Jefe Inmediato <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="jefe_inmediato" name="jefe_inmediato" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Periodo de Reporte -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        Periodo de Reporte
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="fecha_inicio" class="form-label">Fecha de Inicio <span class="required">*</span></label>
+                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="fecha_fin" class="form-label">Fecha de Fin <span class="required">*</span></label>
+                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="semana" class="form-label">Semana No. <span class="required">*</span></label>
+                            <input type="number" class="form-control" id="semana" name="semana" min="1" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actividades Desarrolladas -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-tasks"></i>
+                        Actividades Desarrolladas
+                    </h3>
+                    <div id="actividades-container">
+                        <div class="activity-row">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Fecha <span class="required">*</span></label>
+                                    <input type="date" class="form-control" name="actividad_fecha[]" required>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-label">Horas <span class="required">*</span></label>
+                                    <input type="number" class="form-control" name="actividad_horas[]" min="1" max="8" required>
+                                </div>
+                                <div class="col-md-7 mb-3">
+                                    <label class="form-label">Descripción de la Actividad <span class="required">*</span></label>
+                                    <textarea class="form-control" name="actividad_descripcion[]" rows="3" placeholder="Describa detalladamente la actividad realizada..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-success" onclick="agregarActividad()">
+                        <i class="fas fa-plus me-2"></i>Agregar Actividad
+                    </button>
+                </div>
+                
+                <!-- Logros y Aprendizajes -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-trophy"></i>
+                        Logros y Aprendizajes
+                    </h3>
+                    <div class="mb-3">
+                        <label for="logros" class="form-label">Principales Logros Alcanzados <span class="required">*</span></label>
+                        <textarea class="form-control" id="logros" name="logros" rows="4" placeholder="Describa los principales logros y metas alcanzadas durante este periodo..." required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="aprendizajes" class="form-label">Conocimientos y Competencias Adquiridas <span class="required">*</span></label>
+                        <textarea class="form-control" id="aprendizajes" name="aprendizajes" rows="4" placeholder="Describa los nuevos conocimientos, habilidades y competencias que ha desarrollado..." required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dificultades" class="form-label">Dificultades Encontradas</label>
+                        <textarea class="form-control" id="dificultades" name="dificultades" rows="3" placeholder="Describa las principales dificultades o retos encontrados y cómo los abordó..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Evaluación -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Evaluación del Periodo
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cumplimiento_objetivos" class="form-label">Cumplimiento de Objetivos (1-5) <span class="required">*</span></label>
+                            <select class="form-select" id="cumplimiento_objetivos" name="cumplimiento_objetivos" required>
+                                <option value="">Seleccione</option>
+                                <option value="1">1 - Deficiente</option>
+                                <option value="2">2 - Regular</option>
+                                <option value="3">3 - Aceptable</option>
+                                <option value="4">4 - Bueno</option>
+                                <option value="5">5 - Excelente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="calidad_trabajo" class="form-label">Calidad del Trabajo (1-5) <span class="required">*</span></label>
+                            <select class="form-select" id="calidad_trabajo" name="calidad_trabajo" required>
+                                <option value="">Seleccione</option>
+                                <option value="1">1 - Deficiente</option>
+                                <option value="2">2 - Regular</option>
+                                <option value="3">3 - Aceptable</option>
+                                <option value="4">4 - Bueno</option>
+                                <option value="5">5 - Excelente</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Firmas -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-signature"></i>
+                        Firmas y Validación
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Firma del Aprendiz <span class="required">*</span></label>
+                            <div class="signature-box" onclick="solicitarFirma('aprendiz')">
+                                <div class="text-center">
+                                    <i class="fas fa-signature fa-2x mb-2"></i>
+                                    <p class="mb-0">Haz clic para firmar</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Firma del Jefe Inmediato <span class="required">*</span></label>
+                            <div class="signature-box" onclick="solicitarFirma('jefe')">
+                                <div class="text-center">
+                                    <i class="fas fa-signature fa-2x mb-2"></i>
+                                    <p class="mb-0">Haz clic para firmar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botones de Acción -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-secondary-custom">
+                        <i class="fas fa-save me-2"></i>Guardar Borrador
+                    </button>
+                    <button type="submit" class="btn btn-primary-custom">
+                        <i class="fas fa-paper-plane me-2"></i>Enviar Bitácora
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function agregarActividad() {
+            const container = document.getElementById('actividades-container');
+            const newActivity = document.createElement('div');
+            newActivity.className = 'activity-row';
+            newActivity.innerHTML = `
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Fecha <span class="required">*</span></label>
+                        <input type="date" class="form-control" name="actividad_fecha[]" required>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label">Horas <span class="required">*</span></label>
+                        <input type="number" class="form-control" name="actividad_horas[]" min="1" max="8" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Descripción de la Actividad <span class="required">*</span></label>
+                        <textarea class="form-control" name="actividad_descripcion[]" rows="3" placeholder="Describa detalladamente la actividad realizada..." required></textarea>
+                    </div>
+                    <div class="col-md-1 mb-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-outline-danger" onclick="eliminarActividad(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newActivity);
+            actualizarProgreso();
+        }
+        
+        function eliminarActividad(btn) {
+            btn.closest('.activity-row').remove();
+            actualizarProgreso();
+        }
+        
+        function solicitarFirma(tipo) {
+            alert(`Funcionalidad de firma digital para ${tipo} - Por implementar`);
+        }
+        
+        function actualizarProgreso() {
+            const form = document.getElementById('bitacoraForm');
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            const filled = Array.from(inputs).filter(input => input.value.trim() !== '').length;
+            const percentage = Math.round((filled / inputs.length) * 100);
+            
+            document.querySelector('.progress-bar-custom').style.width = percentage + '%';
+            
+            // Update step indicators
+            const steps = document.querySelectorAll('.step');
+            const stepPercentage = percentage / 20; // 5 steps, so each is 20%
+            
+            steps.forEach((step, index) => {
+                if (index < Math.floor(stepPercentage)) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (index === Math.floor(stepPercentage)) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+        }
+        
+        // Form submission
+        document.getElementById('bitacoraForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validation
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            if (isValid) {
+                alert('Bitácora enviada correctamente. Se notificará al instructor para su revisión.');
+                // Here you would normally submit to your Django backend
+                // this.submit();
+            } else {
+                alert('Por favor complete todos los campos obligatorios marcados con *');
+            }
+        });
+        
+        // Real-time progress update
+        document.addEventListener('input', actualizarProgreso);
+        document.addEventListener('change', actualizarProgreso);
+        
+        // Initialize progress
+        actualizarProgreso();
+    </script>
+</body>
+</html>
